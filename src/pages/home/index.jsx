@@ -1,23 +1,7 @@
-import { useDispatch } from 'react-redux';
-import Cookie from 'js-cookie';
-
-import { logoutAction } from 'redux-store/slices/user';
+import MainLayout from 'components/shared/main-layout';
 
 const Home = () => {
-  const dispatch = useDispatch();
-
-  const handleLogout = () => {
-    dispatch(logoutAction());
-    Cookie.remove('token');
-    dispatch(logoutAction());
-    window.location.pathname = '/auth/signin';
-  };
-  return (
-    <div>
-      Home
-      <button onClick={handleLogout}>logout</button>
-    </div>
-  );
+  return <MainLayout pageTitle={'Home'}></MainLayout>;
 };
 
 export default Home;

@@ -5,12 +5,13 @@
   --lightGrey: rgb(230, 236, 240);
   --spacing: 15px;
   --greyText: rgb(101, 119, 134);
-  --greyButtonText: rgba(0, 0, 0, 0.34);
+  --greyButtonText: #00000057;
   --red: rgb(226, 34, 94);
   --redBackground: rgba(226, 34, 94, 0.1);
   --green: rgb(23, 191, 99);
   --greenBackground: rgba(23, 191, 99, 0.1);
   --blueBackground: rgba(212, 237, 255, 0.6);
+  --spacing: 15px;
 }
 
 @font-face {
@@ -19,10 +20,36 @@
     url(./assets/fonts/Roboto-Regular.ttf) format('truetype');
 }
 
+@font-face {
+  font-family: 'Bold';
+  src: local('Bold'), url(./assets/fonts/Roboto-Bold.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'RBlack';
+  src: local('RBlack'), url(./assets/fonts/Roboto-Black.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Medium';
+  src: local('Medium'), url(./assets/fonts/Roboto-Medium.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Light';
+  src: local('Light'), url(./assets/fonts/Roboto-Light.ttf) format('truetype');
+}
+
 *,
 body {
   margin: 0;
   font-family: Regular, serif;
+}
+
+h1 {
+  font-size: 19px;
+  font-family: RBlack;
+  margin: 0;
 }
 
 .spin-button-none::-webkit-outer-spin-button,
@@ -55,4 +82,8 @@ body {
 .scrollbar::-webkit-scrollbar-thumb {
   background: #aeaeafa1;
   border-radius: 5px;
+}
+
+a {
+  color: inherit;
 }

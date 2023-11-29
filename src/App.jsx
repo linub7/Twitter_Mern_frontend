@@ -8,6 +8,10 @@ import Home from 'pages/home';
 import NotLoggedInRoutes from 'routes/NotLoggedInRoutes';
 import LoggedInRoutes from 'routes/LoggedInRoutes';
 import NotFound from 'pages/not-found';
+import Search from 'pages/search';
+import Notifications from 'pages/notifications';
+import Messages from 'pages/messages';
+import Account from 'pages/account';
 
 function App() {
   return (
@@ -20,6 +24,10 @@ function App() {
         </Route>
         <Route element={<LoggedInRoutes />}>
           <Route path="/" element={<Home />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/messages" element={<Messages />} />
+          <Route path="/account" element={<Account />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
