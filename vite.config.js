@@ -11,6 +11,9 @@ export default defineConfig({
       pages: '/src/pages',
       api: '/src/api',
       utils: '/src/utils',
+      routes: '/src/routes',
+      assets: '/src/assets',
+      'redux-store': '/src/redux-store',
     },
   },
 });
