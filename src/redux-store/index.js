@@ -4,6 +4,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 import createFilter from 'redux-persist-transform-filter';
 
 import userReducer from './slices/user';
+import postReducer from './slices/post';
 
 const saveUserOnlyFilter = createFilter('user', ['user']);
 
@@ -17,6 +18,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   user: userReducer,
+  post: postReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

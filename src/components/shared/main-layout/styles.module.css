@@ -36,12 +36,6 @@
 
 @media (max-width: 640px) {
   .row {
-    grid-template-columns: 75px 5fr 1fr;
-  }
-}
-
-@media (max-width: 480px) {
-  .row {
     grid-template-columns: 75px 5fr;
   }
   .thirdColumn {

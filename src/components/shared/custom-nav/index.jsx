@@ -33,42 +33,42 @@ const CustomNav = ({ navStyles, navRef }) => {
   return (
     <nav className={navStyles} ref={navRef}>
       <CustomNavLink path={'/'} styles={styles.navLink}>
-        <IoLogoTwitter size={35} color="#1fa2f1" />
+        <IoLogoTwitter size={30} color="#1fa2f1" />
       </CustomNavLink>
       <CustomNavLink path={'/'} styles={styles.navLink}>
         <IoHomeOutline
-          size={35}
-          color={location?.pathname === '/' ? '#1fa2f1' : '#657786'}
+          size={30}
+          color={location?.pathname === '/' ? '#1fa2f1' : '#212529'}
         />
       </CustomNavLink>
       <CustomNavLink path={'/search'} styles={styles.navLink}>
         <IoSearchOutline
-          size={35}
-          color={location?.pathname === '/search' ? '#1fa2f1' : '#657786'}
+          size={30}
+          color={location?.pathname === '/search' ? '#1fa2f1' : '#212529'}
         />
       </CustomNavLink>
       <CustomNavLink path={'/notifications'} styles={styles.navLink}>
         <IoNotificationsOutline
-          size={35}
+          size={30}
           color={
-            location?.pathname === '/notifications' ? '#1fa2f1' : '#657786'
+            location?.pathname === '/notifications' ? '#1fa2f1' : '#212529'
           }
         />
       </CustomNavLink>
       <CustomNavLink path={'/messages'} styles={styles.navLink}>
         <IoMailOutline
-          size={35}
-          color={location?.pathname === '/messages' ? '#1fa2f1' : '#657786'}
+          size={30}
+          color={location?.pathname === '/messages' ? '#1fa2f1' : '#212529'}
         />
       </CustomNavLink>
       <CustomNavLink path={'/account'} styles={styles.navLink}>
         <IoPersonOutline
-          size={35}
-          color={location?.pathname === '/account' ? '#1fa2f1' : '#657786'}
+          size={30}
+          color={location?.pathname === '/account' ? '#1fa2f1' : '#212529'}
         />
       </CustomNavLink>
       <div className={styles.navLink} onClick={handleSignout}>
-        <IoLogOutOutline size={35} />
+        <IoLogOutOutline size={30} />
       </div>
     </nav>
   );
