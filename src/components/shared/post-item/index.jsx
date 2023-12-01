@@ -5,7 +5,7 @@ import {
   IoHeartOutline,
 } from 'react-icons/io5';
 
-import { getImageSource } from 'utils/helper';
+import { getImageSource, timeDifference } from 'utils/helper';
 import styles from './styles.module.css';
 import PostItemFooterButton from './footer-button';
 
@@ -17,6 +17,7 @@ const PostItem = ({
   createdAt,
 }) => {
   const source = getImageSource(profilePicUrl);
+  const date = timeDifference(new Date(), new Date(createdAt));
   return (
     <div className={styles.post}>
       <div className={styles.mainContentContainer}>
@@ -29,7 +30,7 @@ const PostItem = ({
               {displayName}
             </Link>
             <span className={styles.username}>@{username}</span>
-            <span className={styles.date}>{createdAt}</span>
+            <span className={styles.date}>{date}</span>
           </div>
           <div className={styles.postBody}>
             <span>{content}</span>

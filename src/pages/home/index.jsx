@@ -9,6 +9,7 @@ import { createPostHandler, getPostsHandler } from 'api/post';
 import { addPostToPostsAction, getPostsAction } from 'redux-store/slices/post';
 import CustomHashLoader from 'components/shared/custom-hash-loader';
 import HomePagePosts from 'components/home/posts';
+import NoResult from 'components/shared/no-result';
 
 const Home = () => {
   const [content, setContent] = useState('');
@@ -71,7 +72,11 @@ const Home = () => {
             onChange={handleChangeInput}
             onClick={handleCreatePost}
           />
-          <HomePagePosts posts={posts} message={content} />
+          {posts?.length === 0 ? (
+            <NoResult />
+          ) : (
+            <HomePagePosts posts={posts} message={content} />
+          )}
         </>
       )}
     </MainLayout>
