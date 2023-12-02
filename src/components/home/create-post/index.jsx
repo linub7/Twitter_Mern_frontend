@@ -5,6 +5,7 @@ const HomePageCreatePost = ({
   username,
   disabled = false,
   value,
+  isInReplyMode = false,
   onChange = () => {},
   onClick = () => {},
 }) => {
@@ -19,16 +20,18 @@ const HomePageCreatePost = ({
           onChange={onChange}
           value={value}
         />
-        <div className={styles.buttonContainer}>
-          <button
-            type="submit"
-            disabled={disabled}
-            className={styles.submitPostButton}
-            onClick={onClick}
-          >
-            Post
-          </button>
-        </div>
+        {!isInReplyMode && (
+          <div className={styles.buttonContainer}>
+            <button
+              type="submit"
+              disabled={disabled}
+              className={styles.submitPostButton}
+              onClick={onClick}
+            >
+              Post
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

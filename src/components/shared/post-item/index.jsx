@@ -18,7 +18,15 @@ import {
   updatePostStatus,
 } from 'redux-store/slices/post';
 
-const PostItem = ({ userId, token, post, retweetedBy, isRetweetedPost }) => {
+const PostItem = ({
+  userId,
+  token,
+  post,
+  retweetedBy,
+  isRetweetedPost,
+  isInReplyMode = false,
+  handleClickChatBubble = () => {},
+}) => {
   const [isRetweeted, setIsRetweeted] = useState(false);
   const dispatch = useDispatch();
   const postId = post?._id;
@@ -29,7 +37,7 @@ const PostItem = ({ userId, token, post, retweetedBy, isRetweetedPost }) => {
   const isLiked = post?.likes?.includes(userId);
 
   useEffect(() => {
-    if (post?.retweetUsers?.length < 1) return;
+    if (!post?.retweetUsers || post?.retweetUsers?.length < 1) return;
     for (const item of post.retweetUsers) {
       if (item?._id !== undefined) {
         item?._id === userId && setIsRetweeted(true);
@@ -42,10 +50,6 @@ const PostItem = ({ userId, token, post, retweetedBy, isRetweetedPost }) => {
       setIsRetweeted(false);
     };
   }, [userId, post?.retweetUsers]);
-
-  const handleClickChatBubble = useCallback(async () => {
-    console.log(postId);
-  }, [postId]);
 
   const handleClickRetweet = useCallback(async () => {
     const { err, data } = await postRetweetHandler(postId, token);
@@ -110,54 +114,66 @@ const PostItem = ({ userId, token, post, retweetedBy, isRetweetedPost }) => {
             <span className={styles.username}>@{post?.postedBy?.username}</span>
             <span className={styles.date}>{date}</span>
           </div>
+          {post?.replyTo?._id && (
+            <div className={styles.replyFlag}>
+              Replying to{' '}
+              <Link to={`/profile/${post?.replyTo?.postedBy?.username}`}>
+                @{post?.replyTo?.postedBy?.username}
+              </Link>
+            </div>
+          )}
           <div className={styles.postBody}>
             <span>{post?.content}</span>
           </div>
-          <div className={styles.postFooter}>
-            <div className={styles.postButtonContainer}>
-              <PostItemFooterButton onClick={handleClickChatBubble}>
-                <IoChatbubbleOutline size={20} />
-              </PostItemFooterButton>
+          {!isInReplyMode && !isRetweetedPost && (
+            <div className={styles.postFooter}>
+              <div className={styles.postButtonContainer}>
+                <PostItemFooterButton
+                  onClick={() => handleClickChatBubble(post)}
+                >
+                  <IoChatbubbleOutline size={20} />
+                </PostItemFooterButton>
+              </div>
+              <div
+                className={`${styles.postButtonContainer} ${
+                  isRetweeted ? styles.activeRetweeted : undefined
+                }`}
+              >
+                <PostItemFooterButton onClick={handleClickRetweet}>
+                  <IoRepeatOutline
+                    size={20}
+                    color={isRetweeted ? '#17bf63' : ''}
+                  />
+                  {post?.retweetUsers?.length > 0 && (
+                    <span
+                      style={{
+                        color: isRetweeted ? '#17bf63' : '',
+                        fontSize: 14,
+                      }}
+                    >
+                      {post?.retweetUsers?.length}
+                    </span>
+                  )}
+                </PostItemFooterButton>
+              </div>
+              <div
+                className={`${styles.postButtonContainer} ${
+                  isLiked ? styles.activeLike : undefined
+                }`}
+              >
+                <PostItemFooterButton onClick={handleToggleLike}>
+                  <IoHeartOutline size={20} color={isLiked ? '#e22255' : ''} />
+                  {post?.likes?.length > 0 && (
+                    <span
+                      style={{ color: isLiked ? '#e22255' : '', fontSize: 14 }}
+                    >
+                      {post?.likes?.length}
+                    </span>
+                  )}
+                </PostItemFooterButton>
+              </div>
             </div>
-            <div
-              className={`${styles.postButtonContainer} ${
-                isRetweeted ? styles.activeRetweeted : undefined
-              }`}
-            >
-              <PostItemFooterButton onClick={handleClickRetweet}>
-                <IoRepeatOutline
-                  size={20}
-                  color={isRetweeted ? '#17bf63' : ''}
-                />
-                {post?.retweetUsers?.length > 0 && (
-                  <span
-                    style={{
-                      color: isRetweeted ? '#17bf63' : '',
-                      fontSize: 14,
-                    }}
-                  >
-                    {post?.retweetUsers?.length}
-                  </span>
-                )}
-              </PostItemFooterButton>
-            </div>
-            <div
-              className={`${styles.postButtonContainer} ${
-                isLiked ? styles.activeLike : undefined
-              }`}
-            >
-              <PostItemFooterButton onClick={handleToggleLike}>
-                <IoHeartOutline size={20} color={isLiked ? '#e22255' : ''} />
-                {post?.likes?.length > 0 && (
-                  <span
-                    style={{ color: isLiked ? '#e22255' : '', fontSize: 14 }}
-                  >
-                    {post?.likes?.length}
-                  </span>
-                )}
-              </PostItemFooterButton>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

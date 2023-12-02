@@ -1,7 +1,11 @@
 import PostItem from 'components/shared/post-item';
 
-const HomePagePosts = ({ posts, userId, token }) => {
-  console.log({ posts });
+const HomePagePosts = ({
+  posts,
+  userId,
+  token,
+  handleClickChatBubble = () => {},
+}) => {
   return posts?.map((post) => {
     const isRetweetedPost =
       post?.retweetData !== undefined || post?.retweetData?._id !== undefined;
@@ -13,6 +17,7 @@ const HomePagePosts = ({ posts, userId, token }) => {
         userId={userId}
         token={token}
         isRetweetedPost={isRetweetedPost}
+        handleClickChatBubble={handleClickChatBubble}
       />
     );
   });

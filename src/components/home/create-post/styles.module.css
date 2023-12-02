@@ -26,6 +26,7 @@
   border: none;
   resize: none;
   font-size: 19px;
+  background: transparent;
 }
 
 .buttonContainer {
