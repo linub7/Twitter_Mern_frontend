@@ -34,7 +34,7 @@
 .header {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
 }
 
 .displayName {
@@ -61,11 +61,33 @@
 }
 
 .postFooter .postButtonContainer button {
-  padding: 2px 5px;
+  padding: 5px;
 }
 
 .postButtonContainer button:hover {
   background-color: var(--buttonHoverBg);
   color: var(--blue);
   border-radius: 50%;
+}
+
+.activeLike button:hover {
+  background-color: var(--redBackground);
+  color: var(--red);
+  border-radius: 50%;
+}
+
+.activeRetweeted button:hover {
+  background-color: var(--greenBackground);
+  color: var(--green);
+  border-radius: 50%;
+}
+
+.postActionContainer {
+  padding-left: 35px;
+  font-size: 13px;
+  color: var(--greyText);
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
 }

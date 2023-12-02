@@ -16,11 +16,34 @@ const postSlice = createSlice({
       const { payload } = action;
       state.posts = [payload, ...state.posts];
     },
+    removePostAction: (state, action) => {
+      const { payload } = action;
+
+      let tmpPosts = [...state.posts];
+      tmpPosts = tmpPosts.filter((post) => post?._id !== payload?._id);
+
+      state.posts = tmpPosts;
+    },
+    updatePostStatus: (state, action) => {
+      const { payload } = action;
+
+      let tmpPosts = [...state.posts];
+      tmpPosts = tmpPosts.map((post) =>
+        post?._id !== payload?._id ? post : payload
+      );
+
+      state.posts = tmpPosts;
+    },
   },
 });
 
 export const {
-  actions: { getPostsAction, addPostToPostsAction },
+  actions: {
+    getPostsAction,
+    addPostToPostsAction,
+    updatePostStatus,
+    removePostAction,
+  },
 } = postSlice;
 
 export default postSlice.reducer;

@@ -12,6 +12,7 @@ import Search from 'pages/search';
 import Notifications from 'pages/notifications';
 import Messages from 'pages/messages';
 import Account from 'pages/account';
+import Profile from 'pages/profile/[username]';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/account" element={<Account />} />
+          <Route path="/profile/:username" element={<Profile />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

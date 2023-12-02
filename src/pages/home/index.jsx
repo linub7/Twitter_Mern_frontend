@@ -75,7 +75,11 @@ const Home = () => {
           {posts?.length === 0 ? (
             <NoResult />
           ) : (
-            <HomePagePosts posts={posts} message={content} />
+            <HomePagePosts
+              posts={posts}
+              userId={user?.id}
+              token={user?.token}
+            />
           )}
         </>
       )}
