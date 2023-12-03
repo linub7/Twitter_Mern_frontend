@@ -1,6 +1,6 @@
 import PostItem from 'components/shared/post-item';
 
-const HomePagePosts = ({
+const PostsList = ({
   posts,
   userId,
   token,
@@ -23,4 +23,4 @@ const HomePagePosts = ({
   });
 };
 
-export default HomePagePosts;
+export default PostsList;

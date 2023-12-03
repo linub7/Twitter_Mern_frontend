@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   IoChatbubbleOutline,
   IoRepeatOutline,
   IoHeartOutline,
+  IoArrowForwardOutline,
 } from 'react-icons/io5';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
@@ -27,8 +28,13 @@ const PostItem = ({
   isInReplyMode = false,
   handleClickChatBubble = () => {},
 }) => {
+  const { pathname } = useLocation();
+  const potentialExistedPostId = pathname?.split('/')[2];
+
   const [isRetweeted, setIsRetweeted] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const postId = post?._id;
 
   const source = getImageSource(post?.postedBy?.profilePic?.url);
@@ -50,6 +56,8 @@ const PostItem = ({
       setIsRetweeted(false);
     };
   }, [userId, post?.retweetUsers]);
+
+  const handleNavigateToPostPage = () => navigate(`/posts/${postId}`);
 
   const handleClickRetweet = useCallback(async () => {
     const { err, data } = await postRetweetHandler(postId, token);
@@ -89,7 +97,11 @@ const PostItem = ({
   }, [postId, dispatch, token]);
 
   return (
-    <div className={styles.post}>
+    <div
+      className={`${styles.post} ${
+        potentialExistedPostId === postId ? styles.activePost : ''
+      }`}
+    >
       {isRetweetedPost && (
         <div className={styles.postActionContainer}>
           <IoRepeatOutline size={15} />
@@ -175,6 +187,17 @@ const PostItem = ({
             </div>
           )}
         </div>
+
+        {!isInReplyMode &&
+          !isRetweetedPost &&
+          potentialExistedPostId !== postId && (
+            <div
+              onClick={handleNavigateToPostPage}
+              className={styles.navigateButton}
+            >
+              <IoArrowForwardOutline color="#1fa2f1" size={20} />
+            </div>
+          )}
       </div>
     </div>
   );

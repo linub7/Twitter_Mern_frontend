@@ -1,19 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
-import { HashLoader, BounceLoader } from 'react-spinners';
+import { HashLoader } from 'react-spinners';
 
-import styles from './styles.module.css';
-import HomePageCreatePost from 'components/home/create-post';
+import CreatePost from 'components/shared/create-post';
 import MainLayout from 'components/shared/main-layout';
 import { getImageSource } from 'utils/helper';
 import { createPostHandler, getPostsHandler } from 'api/post';
 import { addPostToPostsAction, getPostsAction } from 'redux-store/slices/post';
 import CustomLoader from 'components/shared/custom-loader';
-import HomePagePosts from 'components/home/posts';
+import PostsList from 'components/shared/posts-list';
 import NoResult from 'components/shared/no-result';
-import CustomModal from 'components/shared/modal';
-import PostItem from 'components/shared/post-item';
+import ReplyModal from 'components/shared/reply-modal';
 
 const Home = () => {
   const [content, setContent] = useState('');
@@ -40,12 +38,6 @@ const Home = () => {
   }, []);
 
   const handleChangeInput = (e) => setContent(e.target.value);
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setTargetPost(null);
-    setReplyContent('');
-  };
 
   const handleClickChatBubble = (post) => {
     setIsModalOpen(true);
@@ -79,28 +71,6 @@ const Home = () => {
     dispatch(addPostToPostsAction(data?.data?.data));
   }, [content, dispatch, user?.token, createPostLoading]);
 
-  const handleSendReply = useCallback(async () => {
-    setCreateReplyPostLoading(true);
-    const values = { content: replyContent, replyTo: targetPost?._id };
-    const { err, data } = await createPostHandler(values, user?.token);
-    if (err) {
-      console.log(err);
-      setCreateReplyPostLoading(false);
-      setReplyContent('');
-      return toast.error(err?.message);
-    }
-    setReplyContent('');
-    setCreateReplyPostLoading(false);
-    setIsModalOpen(false);
-    dispatch(addPostToPostsAction(data?.data?.data));
-  }, [
-    targetPost?._id,
-    replyContent,
-    dispatch,
-    user?.token,
-    createReplyPostLoading,
-  ]);
-
   return (
     <MainLayout pageTitle={'Home'}>
       {getPostsLoading ? (
@@ -109,7 +79,7 @@ const Home = () => {
         </CustomLoader>
       ) : (
         <>
-          <HomePageCreatePost
+          <CreatePost
             source={userImage}
             username={user?.username}
             value={content}
@@ -120,7 +90,7 @@ const Home = () => {
           {posts?.length === 0 ? (
             <NoResult />
           ) : (
-            <HomePagePosts
+            <PostsList
               posts={posts}
               userId={user?.id}
               token={user?.token}
@@ -130,62 +100,16 @@ const Home = () => {
         </>
       )}
       {isModalOpen && (
-        <CustomModal header={'Reply'} onClose={handleCloseModal}>
-          <PostItem
-            isInReplyMode={true}
-            retweetedBy={
-              targetPost?.retweetData !== undefined ||
-              targetPost?.retweetData?._id !== undefined
-                ? targetPost?.postedBy?.username
-                : null
-            }
-            post={
-              targetPost?.retweetData !== undefined ||
-              targetPost?.retweetData?._id !== undefined
-                ? targetPost?.retweetData
-                : targetPost
-            }
-            userId={user?.id}
-            token={user?.token}
-            isRetweetedPost={
-              targetPost?.retweetData !== undefined ||
-              targetPost?.retweetData?._id !== undefined
-            }
-            handleClickChatBubble={handleClickChatBubble}
-          />
-          {createReplyPostLoading ? (
-            <CustomLoader>
-              <BounceLoader color="#9bd1f9" />
-            </CustomLoader>
-          ) : (
-            <>
-              <HomePageCreatePost
-                source={userImage}
-                username={user?.username}
-                value={replyContent}
-                disabled={!replyContent?.trim() || createReplyPostLoading}
-                isInReplyMode={true}
-                onChange={(e) => setReplyContent(e.target.value)}
-                onClick={() => console.log(replyContent)}
-              />
-              <div className={styles.modalFooter}>
-                <button
-                  className={styles.cancelButton}
-                  onClick={handleCloseModal}
-                >
-                  Cancel
-                </button>
-                <button
-                  className={styles.replyButton}
-                  disabled={!replyContent.trim() || createReplyPostLoading}
-                  onClick={handleSendReply}
-                >
-                  Send Reply
-                </button>
-              </div>
-            </>
-          )}
-        </CustomModal>
+        <ReplyModal
+          replyContent={replyContent}
+          targetPost={targetPost}
+          user={user}
+          createReplyPostLoading={createReplyPostLoading}
+          setCreateReplyPostLoading={setCreateReplyPostLoading}
+          setIsModalOpen={setIsModalOpen}
+          setReplyContent={setReplyContent}
+          setTargetPost={setTargetPost}
+        />
       )}
     </MainLayout>
   );

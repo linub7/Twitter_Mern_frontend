@@ -1,6 +1,6 @@
 import styles from './styles.module.css';
 
-const HomePageCreatePost = ({
+const CreatePost = ({
   source,
   username,
   disabled = false,
@@ -37,4 +37,4 @@ const HomePageCreatePost = ({
   );
 };
 
-export default HomePageCreatePost;
+export default CreatePost;

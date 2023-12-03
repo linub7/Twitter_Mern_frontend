@@ -4,7 +4,7 @@ import gsap from 'gsap';
 
 import styles from './styles.module.css';
 
-const CustomModal = ({ header, children, onClose = () => {} }) => {
+const ModalContainer = ({ header, children, onClose = () => {} }) => {
   const modalRef = useRef(null);
 
   useEffect(() => {
@@ -32,4 +32,4 @@ const CustomModal = ({ header, children, onClose = () => {} }) => {
   );
 };
 
-export default CustomModal;
+export default ModalContainer;

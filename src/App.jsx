@@ -13,6 +13,7 @@ import Notifications from 'pages/notifications';
 import Messages from 'pages/messages';
 import Account from 'pages/account';
 import Profile from 'pages/profile/[username]';
+import Post from 'pages/posts/[id]';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/messages" element={<Messages />} />
           <Route path="/account" element={<Account />} />
           <Route path="/profile/:username" element={<Profile />} />
+          <Route path="/posts/:id" element={<Post />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
