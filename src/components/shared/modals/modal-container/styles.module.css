@@ -44,3 +44,24 @@
   color: var(--red);
   scale: 1.1;
 }
+
+.modalFooter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing);
+  padding-top: var(--spacing);
+}
+
+.modalFooter button {
+  padding: 7px 20px;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.replyButton {
+  background-color: var(--blue);
+}
+.cancelButton {
+  background-color: var(--red);
+}

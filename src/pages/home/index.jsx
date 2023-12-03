@@ -6,12 +6,21 @@ import { HashLoader } from 'react-spinners';
 import CreatePost from 'components/shared/create-post';
 import MainLayout from 'components/shared/main-layout';
 import { getImageSource } from 'utils/helper';
-import { createPostHandler, getPostsHandler } from 'api/post';
-import { addPostToPostsAction, getPostsAction } from 'redux-store/slices/post';
+import {
+  createPostHandler,
+  deletePostHandler,
+  getPostsHandler,
+} from 'api/post';
+import {
+  addPostToPostsAction,
+  getPostsAction,
+  removePostAction,
+} from 'redux-store/slices/post';
 import CustomLoader from 'components/shared/custom-loader';
 import PostsList from 'components/shared/posts-list';
 import NoResult from 'components/shared/no-result';
-import ReplyModal from 'components/shared/reply-modal';
+import ReplyModal from 'components/shared/modals/reply-modal';
+import WarningModal from 'components/shared/modals/warning-modal';
 
 const Home = () => {
   const [content, setContent] = useState('');
@@ -20,6 +29,8 @@ const Home = () => {
   const [createReplyPostLoading, setCreateReplyPostLoading] = useState(false);
   const [getPostsLoading, setGetPostsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
+  const [deletePostLoading, setDeletePostLoading] = useState(false);
   const [targetPost, setTargetPost] = useState(null);
 
   const { user } = useSelector((state) => state.user);
@@ -41,6 +52,11 @@ const Home = () => {
 
   const handleClickChatBubble = (post) => {
     setIsModalOpen(true);
+    setTargetPost(post);
+  };
+
+  const handleOpenWarningModal = (post) => {
+    setIsWarningModalOpen(true);
     setTargetPost(post);
   };
 
@@ -71,6 +87,20 @@ const Home = () => {
     dispatch(addPostToPostsAction(data?.data?.data));
   }, [content, dispatch, user?.token, createPostLoading]);
 
+  const handleDeletePost = useCallback(async () => {
+    setDeletePostLoading(true);
+    const { err, data } = await deletePostHandler(targetPost?._id, user?.token);
+    if (err) {
+      console.log(err);
+      setDeletePostLoading(false);
+      return toast.error(err?.message);
+    }
+
+    setDeletePostLoading(false);
+    setIsWarningModalOpen(false);
+    dispatch(removePostAction(data?.data?.data));
+  }, [targetPost?._id, dispatch, user?.token, deletePostLoading]);
+
   return (
     <MainLayout pageTitle={'Home'}>
       {getPostsLoading ? (
@@ -95,6 +125,7 @@ const Home = () => {
               userId={user?.id}
               token={user?.token}
               handleClickChatBubble={handleClickChatBubble}
+              handleOpenWarningModal={handleOpenWarningModal}
             />
           )}
         </>
@@ -109,6 +140,15 @@ const Home = () => {
           setIsModalOpen={setIsModalOpen}
           setReplyContent={setReplyContent}
           setTargetPost={setTargetPost}
+        />
+      )}
+
+      {isWarningModalOpen && (
+        <WarningModal
+          loading={deletePostLoading}
+          setIsWarningModalOpen={setIsWarningModalOpen}
+          setTargetPost={setTargetPost}
+          onSubmit={handleDeletePost}
         />
       )}
     </MainLayout>

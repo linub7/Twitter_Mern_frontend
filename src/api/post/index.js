@@ -46,6 +46,20 @@ export const getSinglePostAndRepliesHandler = async (id, token) => {
   }
 };
 
+export const deletePostHandler = async (id, token) => {
+  try {
+    const { data } = await client.delete(`/posts/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};
+
 export const togglePostLikeHandler = async (id, token) => {
   try {
     const { data } = await client.put(

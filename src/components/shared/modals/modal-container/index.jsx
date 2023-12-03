@@ -4,7 +4,14 @@ import gsap from 'gsap';
 
 import styles from './styles.module.css';
 
-const ModalContainer = ({ header, children, onClose = () => {} }) => {
+const ModalContainer = ({
+  header,
+  disabled = true,
+  submitButtonTitle,
+  children,
+  onClose = () => {},
+  onSubmit = () => {},
+}) => {
   const modalRef = useRef(null);
 
   useEffect(() => {
@@ -27,6 +34,20 @@ const ModalContainer = ({ header, children, onClose = () => {} }) => {
           </span>
         </div>
         {children}
+        <div className={styles.modalFooter}>
+          <button className={styles.cancelButton} onClick={onClose}>
+            Cancel
+          </button>
+          <button
+            className={styles.replyButton}
+            disabled={disabled}
+            // disabled={!replyContent.trim() || createReplyPostLoading}
+            onClick={onSubmit}
+            // onClick={handleSendReply}
+          >
+            {submitButtonTitle}
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -40,7 +40,18 @@
 .header {
   display: flex;
   align-items: center;
+}
+
+.header__left {
+  display: flex;
   gap: 8px;
+  align-items: center;
+}
+.header__right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  /* gap: 2px; */
 }
 
 .displayName {
@@ -109,4 +120,14 @@
 
 .navigateButton svg:hover {
   scale: 1.1;
+}
+
+.header__right button {
+  padding: 5px;
+}
+
+.header__right button:hover {
+  background-color: var(--buttonHoverBg);
+  color: var(--blue);
+  border-radius: 50%;
 }

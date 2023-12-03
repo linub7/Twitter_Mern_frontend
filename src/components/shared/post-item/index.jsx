@@ -5,7 +5,10 @@ import {
   IoRepeatOutline,
   IoHeartOutline,
   IoArrowForwardOutline,
+  IoCloseOutline,
 } from 'react-icons/io5';
+import { BsPin } from 'react-icons/bs';
+
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 
@@ -27,6 +30,7 @@ const PostItem = ({
   isRetweetedPost,
   isInReplyMode = false,
   handleClickChatBubble = () => {},
+  handleOpenWarningModal = () => {},
 }) => {
   const { pathname } = useLocation();
   const potentialExistedPostId = pathname?.split('/')[2];
@@ -117,14 +121,31 @@ const PostItem = ({
         </div>
         <div className={styles.postContentContainer}>
           <div className={styles.header}>
-            <Link
-              className={styles.displayName}
-              to={`/profile/${post?.postedBy?.username}`}
-            >
-              {post?.postedBy?.firstName} {post?.postedBy?.lastName}
-            </Link>
-            <span className={styles.username}>@{post?.postedBy?.username}</span>
-            <span className={styles.date}>{date}</span>
+            <div className={styles.header__left}>
+              <Link
+                className={styles.displayName}
+                to={`/profile/${post?.postedBy?.username}`}
+              >
+                {post?.postedBy?.firstName} {post?.postedBy?.lastName}
+              </Link>
+              <span className={styles.username}>
+                @{post?.postedBy?.username}
+              </span>
+              <span className={styles.date}>{date}</span>
+            </div>
+
+            <div className={styles.header__right}>
+              <PostItemFooterButton>
+                <BsPin size={17} color="#34495e" />
+              </PostItemFooterButton>
+              {userId === post?.postedBy?._id && (
+                <PostItemFooterButton
+                  onClick={() => handleOpenWarningModal(post)}
+                >
+                  <IoCloseOutline size={17} color="#e22252" />
+                </PostItemFooterButton>
+              )}
+            </div>
           </div>
           {post?.replyTo?._id && (
             <div className={styles.replyFlag}>

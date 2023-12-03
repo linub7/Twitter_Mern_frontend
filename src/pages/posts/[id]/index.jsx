@@ -1,15 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { HashLoader } from 'react-spinners';
 
-import { getSinglePostAndRepliesHandler } from 'api/post';
+import { deletePostHandler, getSinglePostAndRepliesHandler } from 'api/post';
 import CustomLoader from 'components/shared/custom-loader';
 import MainLayout from 'components/shared/main-layout';
 import PostsList from 'components/shared/posts-list';
-import { getPostsAction } from 'redux-store/slices/post';
-import ReplyModal from 'components/shared/reply-modal';
+import { getPostsAction, removePostAction } from 'redux-store/slices/post';
+import ReplyModal from 'components/shared/modals/reply-modal';
+import WarningModal from 'components/shared/modals/warning-modal';
+import NoResult from 'components/shared/no-result';
 
 const Post = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,6 +19,8 @@ const Post = () => {
   const [targetPost, setTargetPost] = useState(null);
   const [replyContent, setReplyContent] = useState('');
   const [createReplyPostLoading, setCreateReplyPostLoading] = useState(false);
+  const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
+  const [deletePostLoading, setDeletePostLoading] = useState(false);
 
   const { posts } = useSelector((state) => state.post);
 
@@ -39,6 +43,11 @@ const Post = () => {
     setIsModalOpen(true);
     setTargetPost(post);
   };
+  const handleOpenWarningModal = (post) => {
+    setIsWarningModalOpen(true);
+    setTargetPost(post);
+  };
+
   const handleGetSinglePostAndReplies = async () => {
     setIsLoading(true);
     const { err, data } = await getSinglePostAndRepliesHandler(id, user?.token);
@@ -51,18 +60,35 @@ const Post = () => {
     setIsLoading(false);
     dispatch(getPostsAction(data?.data?.data));
   };
+
+  const handleDeletePost = useCallback(async () => {
+    setDeletePostLoading(true);
+    const { err, data } = await deletePostHandler(targetPost?._id, user?.token);
+    if (err) {
+      console.log(err);
+      setDeletePostLoading(false);
+      return toast.error(err?.message);
+    }
+
+    setDeletePostLoading(false);
+    setIsWarningModalOpen(false);
+    dispatch(removePostAction(data?.data?.data));
+  }, [targetPost?._id, dispatch, user?.token, deletePostLoading]);
   return (
     <MainLayout pageTitle={`View Post`}>
       {isLoading ? (
         <CustomLoader>
           <HashLoader color={'#9bd1f9'} />
         </CustomLoader>
+      ) : posts?.length < 1 ? (
+        <NoResult />
       ) : (
         <PostsList
           posts={posts}
           token={user?.token}
           userId={user?.id}
           handleClickChatBubble={handleClickChatBubble}
+          handleOpenWarningModal={handleOpenWarningModal}
         />
       )}
 
@@ -76,6 +102,15 @@ const Post = () => {
           setIsModalOpen={setIsModalOpen}
           setReplyContent={setReplyContent}
           setTargetPost={setTargetPost}
+        />
+      )}
+
+      {isWarningModalOpen && (
+        <WarningModal
+          loading={deletePostLoading}
+          setIsWarningModalOpen={setIsWarningModalOpen}
+          setTargetPost={setTargetPost}
+          onSubmit={handleDeletePost}
         />
       )}
     </MainLayout>

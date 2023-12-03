@@ -3,10 +3,9 @@ import { useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 
-import styles from './styles.module.css';
-import CustomLoader from '../custom-loader';
+import CustomLoader from '../../custom-loader';
 import ModalContainer from '../modal-container';
-import PostItem from '../post-item';
+import PostItem from '../../post-item';
 import CreatePost from 'components/shared/create-post';
 import { getImageSource } from 'utils/helper';
 import { createPostHandler } from 'api/post';
@@ -58,7 +57,13 @@ const ReplyModal = ({
     createReplyPostLoading,
   ]);
   return (
-    <ModalContainer header={'Reply'} onClose={handleCloseModal}>
+    <ModalContainer
+      header={'Reply'}
+      onClose={handleCloseModal}
+      submitButtonTitle={'Send Reply'}
+      disabled={!replyContent.trim() || createReplyPostLoading}
+      onSubmit={handleSendReply}
+    >
       <PostItem
         isInReplyMode={true}
         retweetedBy={
@@ -96,18 +101,6 @@ const ReplyModal = ({
             onChange={(e) => setReplyContent(e.target.value)}
             onClick={() => console.log(replyContent)}
           />
-          <div className={styles.modalFooter}>
-            <button className={styles.cancelButton} onClick={handleCloseModal}>
-              Cancel
-            </button>
-            <button
-              className={styles.replyButton}
-              disabled={!replyContent.trim() || createReplyPostLoading}
-              onClick={handleSendReply}
-            >
-              Send Reply
-            </button>
-          </div>
         </>
       )}
     </ModalContainer>

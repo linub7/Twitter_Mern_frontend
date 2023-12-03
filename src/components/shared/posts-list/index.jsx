@@ -4,7 +4,9 @@ const PostsList = ({
   posts,
   userId,
   token,
+  isInReplyMode,
   handleClickChatBubble = () => {},
+  handleOpenWarningModal = () => {},
 }) => {
   return posts?.map((post) => {
     const isRetweetedPost =
@@ -18,6 +20,8 @@ const PostsList = ({
         token={token}
         isRetweetedPost={isRetweetedPost}
         handleClickChatBubble={handleClickChatBubble}
+        isInReplyMode={isInReplyMode}
+        handleOpenWarningModal={handleOpenWarningModal}
       />
     );
   });
