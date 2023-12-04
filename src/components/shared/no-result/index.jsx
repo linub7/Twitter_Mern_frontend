@@ -1,7 +1,7 @@
 import styles from './styles.module.css';
 
-const NoResult = () => {
-  return <span className={styles.noResult}>Nothing to show.</span>;
+const NoResult = ({ title }) => {
+  return <span className={styles.noResult}>{title}</span>;
 };
 
 export default NoResult;

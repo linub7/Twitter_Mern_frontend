@@ -61,10 +61,10 @@ const CustomNav = ({ navStyles, navRef }) => {
           color={location?.pathname === '/messages' ? '#1fa2f1' : '#212529'}
         />
       </CustomNavLink>
-      <CustomNavLink path={'/account'} styles={styles.navLink}>
+      <CustomNavLink path={'/profile'} styles={styles.navLink}>
         <IoPersonOutline
           size={30}
-          color={location?.pathname === '/account' ? '#1fa2f1' : '#212529'}
+          color={location?.pathname === '/profile' ? '#1fa2f1' : '#212529'}
         />
       </CustomNavLink>
       <div className={styles.navLink} onClick={handleSignout}>

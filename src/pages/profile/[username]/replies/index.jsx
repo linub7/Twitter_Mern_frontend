@@ -17,11 +17,11 @@ import ProfilePageHeader from 'components/profile/header';
 import { getImageSource } from 'utils/helper';
 import ProfilePageTabs from 'components/profile/tabs';
 import PostsList from 'components/shared/posts-list';
-import ReplyModal from 'components/shared/modals/reply-modal';
 import WarningModal from 'components/shared/modals/warning-modal';
+import ReplyModal from 'components/shared/modals/reply-modal';
 import { deletePostHandler } from 'api/post';
 
-const UserProfile = () => {
+const UserProfileReplies = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [userNotFoundError, setUserNotFoundError] = useState('');
   const [targetPost, setTargetPost] = useState(null);
@@ -60,7 +60,7 @@ const UserProfile = () => {
   const handleGetUser = async () => {
     setIsLoading(true);
     const { err, data } = await getUserHandler(
-      '',
+      'true',
       params?.username,
       user?.token
     );
@@ -72,7 +72,7 @@ const UserProfile = () => {
     }
     setIsLoading(false);
     dispatch(setProfileData(data?.data?.data?.user));
-    dispatch(setPostsAction(data?.data?.data?.posts));
+    dispatch(setPostsAction(data?.data?.data?.replyPosts));
   };
 
   const handleDeletePost = useCallback(async () => {
@@ -111,7 +111,7 @@ const UserProfile = () => {
           <ProfilePageTabs
             colOneTitle={'Posts'}
             colTwoTitle={'Replies'}
-            activeTab={'Posts'}
+            activeTab={'Replies'}
             username={profileData?.username}
           />
           <PostsList
@@ -149,4 +149,4 @@ const UserProfile = () => {
   );
 };
 
-export default UserProfile;
+export default UserProfileReplies;

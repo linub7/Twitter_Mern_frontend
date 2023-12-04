@@ -2,13 +2,14 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   posts: [],
+  profileData: {},
 };
 
 const postSlice = createSlice({
   name: 'post',
   initialState,
   reducers: {
-    getPostsAction: (state, action) => {
+    setPostsAction: (state, action) => {
       const { payload } = action;
       state.posts = payload;
     },
@@ -34,15 +35,20 @@ const postSlice = createSlice({
 
       state.posts = tmpPosts;
     },
+    setProfileData: (state, action) => {
+      const { payload } = action;
+      state.profileData = payload;
+    },
   },
 });
 
 export const {
   actions: {
-    getPostsAction,
+    setPostsAction,
     addPostToPostsAction,
     updatePostStatus,
     removePostAction,
+    setProfileData,
   },
 } = postSlice;
 

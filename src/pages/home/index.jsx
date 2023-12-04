@@ -13,7 +13,7 @@ import {
 } from 'api/post';
 import {
   addPostToPostsAction,
-  getPostsAction,
+  setPostsAction,
   removePostAction,
 } from 'redux-store/slices/post';
 import CustomLoader from 'components/shared/custom-loader';
@@ -69,7 +69,7 @@ const Home = () => {
       return toast.error(err?.message);
     }
     setGetPostsLoading(false);
-    dispatch(getPostsAction(data?.data?.data));
+    dispatch(setPostsAction(data?.data?.data));
   };
 
   const handleCreatePost = useCallback(async () => {
@@ -118,7 +118,7 @@ const Home = () => {
             onClick={handleCreatePost}
           />
           {posts?.length === 0 ? (
-            <NoResult />
+            <NoResult title={'Nothing to show.'} />
           ) : (
             <PostsList
               posts={posts}

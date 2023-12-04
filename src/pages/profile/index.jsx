@@ -1,64 +1,67 @@
 import { useCallback, useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
 import { HashLoader } from 'react-spinners';
+import toast from 'react-hot-toast';
 
-import { deletePostHandler, getSinglePostAndRepliesHandler } from 'api/post';
-import CustomLoader from 'components/shared/custom-loader';
 import MainLayout from 'components/shared/main-layout';
+import { getMeHandler } from 'api/auth';
+import {
+  removePostAction,
+  setPostsAction,
+  setProfileData,
+} from 'redux-store/slices/post';
+import CustomLoader from 'components/shared/custom-loader';
+import { getImageSource } from 'utils/helper';
+import ProfilePageHeader from 'components/profile/header';
+import ProfilePageTabs from 'components/profile/tabs';
 import PostsList from 'components/shared/posts-list';
-import { setPostsAction, removePostAction } from 'redux-store/slices/post';
 import ReplyModal from 'components/shared/modals/reply-modal';
 import WarningModal from 'components/shared/modals/warning-modal';
-import NoResult from 'components/shared/no-result';
+import { deletePostHandler } from 'api/post';
 
-const Post = () => {
+const Profile = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [targetPost, setTargetPost] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   const [replyContent, setReplyContent] = useState('');
   const [createReplyPostLoading, setCreateReplyPostLoading] = useState(false);
-  const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   const [deletePostLoading, setDeletePostLoading] = useState(false);
 
-  const { posts } = useSelector((state) => state.post);
-
-  const { id } = useParams();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.user);
+  const { posts, profileData } = useSelector((state) => state.post);
+
+  const userProfileSource = getImageSource(profileData?.profilePic?.url);
 
   useEffect(() => {
-    if (!id) return navigate('/');
-    handleGetSinglePostAndReplies();
+    handleGetMe();
 
-    return () => {
+    return () => {};
+  }, []);
+
+  const handleGetMe = async () => {
+    setIsLoading(true);
+    const { err, data } = await getMeHandler('', user?.token);
+    if (err) {
+      console.log(err);
       setIsLoading(false);
-    };
-  }, [id]);
+      return toast.error(err?.message);
+    }
+    setIsLoading(false);
+    dispatch(setProfileData(data?.data?.data?.me));
+    dispatch(setPostsAction(data?.data?.data?.posts));
+  };
 
   const handleClickChatBubble = (post) => {
     setIsModalOpen(true);
     setTargetPost(post);
   };
+
   const handleOpenWarningModal = (post) => {
     setIsWarningModalOpen(true);
     setTargetPost(post);
-  };
-
-  const handleGetSinglePostAndReplies = async () => {
-    setIsLoading(true);
-    const { err, data } = await getSinglePostAndRepliesHandler(id, user?.token);
-    if (err) {
-      console.log(err);
-      setIsLoading(false);
-      toast.error(err?.message);
-      return navigate('/');
-    }
-    setIsLoading(false);
-    dispatch(setPostsAction(data?.data?.data));
   };
 
   const handleDeletePost = useCallback(async () => {
@@ -74,24 +77,39 @@ const Post = () => {
     setIsWarningModalOpen(false);
     dispatch(removePostAction(data?.data?.data));
   }, [targetPost?._id, dispatch, user?.token, deletePostLoading]);
+
   return (
-    <MainLayout pageTitle={`View Post`}>
+    <MainLayout pageTitle={profileData?.username?.toUpperCase()}>
       {isLoading ? (
         <CustomLoader>
           <HashLoader color={'#9bd1f9'} />
         </CustomLoader>
-      ) : posts?.length < 1 ? (
-        <NoResult title={'Nothing to show.'} />
       ) : (
-        <PostsList
-          posts={posts}
-          token={user?.token}
-          userId={user?.id}
-          handleClickChatBubble={handleClickChatBubble}
-          handleOpenWarningModal={handleOpenWarningModal}
-        />
+        <>
+          <ProfilePageHeader
+            userProfileSource={userProfileSource}
+            username={profileData?.username}
+            currentUserId={user?.id}
+            profileDataId={profileData?._id}
+            displayName={`${profileData?.firstName} ${profileData?.lastName}`}
+            followingCount={profileData?.following?.length}
+            followersCount={profileData?.followers?.length}
+          />
+          <ProfilePageTabs
+            colOneTitle={'Posts'}
+            colTwoTitle={'Replies'}
+            activeTab={'Posts'}
+            username={profileData?.username}
+          />
+          <PostsList
+            posts={posts}
+            token={user?.token}
+            userId={user?.id}
+            handleClickChatBubble={handleClickChatBubble}
+            handleOpenWarningModal={handleOpenWarningModal}
+          />
+        </>
       )}
-
       {isModalOpen && (
         <ReplyModal
           replyContent={replyContent}
@@ -117,4 +135,4 @@ const Post = () => {
   );
 };
 
-export default Post;
+export default Profile;

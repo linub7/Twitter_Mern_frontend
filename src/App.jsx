@@ -11,9 +11,13 @@ import NotFound from 'pages/not-found';
 import Search from 'pages/search';
 import Notifications from 'pages/notifications';
 import Messages from 'pages/messages';
-import Account from 'pages/account';
-import Profile from 'pages/profile/[username]';
+import Profile from 'pages/profile';
+import UserProfile from 'pages/profile/[username]';
 import Post from 'pages/posts/[id]';
+import UserMessages from 'pages/messages/[id]';
+import UserProfileFollowing from 'pages/profile/[username]/following';
+import UserProfileFollowers from 'pages/profile/[username]/followers';
+import UserProfileReplies from 'pages/profile/[username]/replies';
 
 function App() {
   return (
@@ -29,8 +33,21 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/messages" element={<Messages />} />
-          <Route path="/account" element={<Account />} />
-          <Route path="/profile/:username" element={<Profile />} />
+          <Route path="/messages/:id" element={<UserMessages />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:username" element={<UserProfile />} />
+          <Route
+            path="/profile/:username/following"
+            element={<UserProfileFollowing />}
+          />
+          <Route
+            path="/profile/:username/followers"
+            element={<UserProfileFollowers />}
+          />
+          <Route
+            path="/profile/:username/replies"
+            element={<UserProfileReplies />}
+          />
           <Route path="/posts/:id" element={<Post />} />
         </Route>
         <Route path="*" element={<NotFound />} />

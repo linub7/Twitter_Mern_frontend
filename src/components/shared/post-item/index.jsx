@@ -124,7 +124,14 @@ const PostItem = ({
             <div className={styles.header__left}>
               <Link
                 className={styles.displayName}
-                to={`/profile/${post?.postedBy?.username}`}
+                // post?.replyTo?.postedBy?._id === userId
+                //     ? `/profile`
+                //     : `/profile/${post?.replyTo?.postedBy?.username}`
+                to={
+                  post?.postedBy?._id === userId
+                    ? `/profile`
+                    : `/profile/${post?.postedBy?.username}`
+                }
               >
                 {post?.postedBy?.firstName} {post?.postedBy?.lastName}
               </Link>
@@ -150,7 +157,13 @@ const PostItem = ({
           {post?.replyTo?._id && (
             <div className={styles.replyFlag}>
               Replying to{' '}
-              <Link to={`/profile/${post?.replyTo?.postedBy?.username}`}>
+              <Link
+                to={
+                  post?.replyTo?.postedBy?._id === userId
+                    ? `/profile`
+                    : `/profile/${post?.replyTo?.postedBy?.username}`
+                }
+              >
                 @{post?.replyTo?.postedBy?.username}
               </Link>
             </div>
