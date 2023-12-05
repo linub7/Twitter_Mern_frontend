@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { IoMailOutline } from 'react-icons/io5';
+import { IoMailOutline, IoCameraOutline } from 'react-icons/io5';
 
 import styles from './styles.module.css';
 import FollowButton from 'components/shared/buttons/follow-button';
@@ -13,17 +13,28 @@ const ProfilePageHeader = ({
   followingCount,
   followers,
   handleToggleUserFollow = () => {},
+  setIsUploadImageModalOpen = () => {},
 }) => {
   const navigate = useNavigate();
   const handleNavigateToUserMessages = () =>
     navigate(`/messages/${profileDataId}`);
 
   const isFollowing = followers?.includes(currentUserId);
+
+  const handleClickCamera = () => setIsUploadImageModalOpen(true);
   return (
     <div className={styles.profileHeaderContainer}>
       <div className={styles.coverPhotoContainer}>
         <div className={styles.userImageContainer}>
           <img src={userProfileSource} alt={username} />
+          {profileDataId === currentUserId && (
+            <button
+              className={styles.profilePictureButton}
+              onClick={handleClickCamera}
+            >
+              <IoCameraOutline size={60} color="rgba(0,0,0,0.6)" />
+            </button>
+          )}
         </div>
       </div>
       {profileDataId !== currentUserId ? (

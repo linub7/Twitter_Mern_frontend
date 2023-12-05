@@ -18,6 +18,7 @@ import PostsList from 'components/shared/posts-list';
 import ReplyModal from 'components/shared/modals/reply-modal';
 import WarningModal from 'components/shared/modals/warning-modal';
 import { deletePostHandler } from 'api/post';
+import UploadImageModal from 'components/shared/modals/upload-image-modal';
 
 const Profile = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,13 +28,18 @@ const Profile = () => {
   const [replyContent, setReplyContent] = useState('');
   const [createReplyPostLoading, setCreateReplyPostLoading] = useState(false);
   const [deletePostLoading, setDeletePostLoading] = useState(false);
+  const [isUploadImageModalOpen, setIsUploadImageModalOpen] = useState(false);
+  const [uploadImageLoading, setUploadImageLoading] = useState(false);
 
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.user);
   const { posts, profileData } = useSelector((state) => state.post);
 
-  const userProfileSource = getImageSource(profileData?.profilePic?.url);
+  const userProfileSource =
+    user?.id === profileData?._id
+      ? getImageSource(user?.profilePic)
+      : getImageSource(profileData?.profilePic?.url);
 
   useEffect(() => {
     handleGetMe();
@@ -94,6 +100,7 @@ const Profile = () => {
             displayName={`${profileData?.firstName} ${profileData?.lastName}`}
             followingCount={profileData?.following?.length}
             followers={profileData?.followers}
+            setIsUploadImageModalOpen={setIsUploadImageModalOpen}
           />
           <ProfilePageTabs
             colOneTitle={'Posts'}
@@ -130,6 +137,15 @@ const Profile = () => {
           setIsWarningModalOpen={setIsWarningModalOpen}
           setTargetPost={setTargetPost}
           onSubmit={handleDeletePost}
+        />
+      )}
+
+      {isUploadImageModalOpen && (
+        <UploadImageModal
+          loading={uploadImageLoading}
+          user={user}
+          setIsUploadImageModalOpen={setIsUploadImageModalOpen}
+          setUploadImageLoading={setUploadImageLoading}
         />
       )}
     </MainLayout>

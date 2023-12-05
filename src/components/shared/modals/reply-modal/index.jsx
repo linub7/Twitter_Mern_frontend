@@ -63,6 +63,7 @@ const ReplyModal = ({
       submitButtonTitle={'Send Reply'}
       disabled={!replyContent.trim() || createReplyPostLoading}
       onSubmit={handleSendReply}
+      loading={createReplyPostLoading}
     >
       <PostItem
         isInReplyMode={true}

@@ -23,6 +23,7 @@ export default defineConfig({
       utils: '/src/utils',
       routes: '/src/routes',
       assets: '/src/assets',
+      constants: '/src/constants',
       'redux-store': '/src/redux-store',
     },
   },

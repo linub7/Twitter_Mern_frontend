@@ -5,10 +5,12 @@ import gsap from 'gsap';
 import styles from './styles.module.css';
 
 const ModalContainer = ({
+  isShowModalFooter = true,
   header,
   disabled = true,
   submitButtonTitle,
   children,
+  loading = false,
   onClose = () => {},
   onSubmit = () => {},
 }) => {
@@ -34,20 +36,22 @@ const ModalContainer = ({
           </span>
         </div>
         {children}
-        <div className={styles.modalFooter}>
-          <button className={styles.cancelButton} onClick={onClose}>
-            Cancel
-          </button>
-          <button
-            className={styles.replyButton}
-            disabled={disabled}
-            // disabled={!replyContent.trim() || createReplyPostLoading}
-            onClick={onSubmit}
-            // onClick={handleSendReply}
-          >
-            {submitButtonTitle}
-          </button>
-        </div>
+        {!loading && isShowModalFooter && (
+          <div className={styles.modalFooter}>
+            <button className={styles.cancelButton} onClick={onClose}>
+              Cancel
+            </button>
+            <button
+              className={styles.replyButton}
+              disabled={disabled}
+              // disabled={!replyContent.trim() || createReplyPostLoading}
+              onClick={onSubmit}
+              // onClick={handleSendReply}
+            >
+              {submitButtonTitle}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

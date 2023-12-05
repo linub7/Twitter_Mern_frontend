@@ -21,6 +21,7 @@ const WarningModal = ({
       submitButtonTitle={"Yes I'm sure"}
       disabled={loading}
       onSubmit={onSubmit}
+      loading={loading}
     >
       {loading ? (
         <CustomLoader>

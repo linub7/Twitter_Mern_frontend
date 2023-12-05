@@ -11,6 +11,10 @@
   position: absolute;
   /* 132px / 2  = 66px*/
   bottom: -66px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .profileHeaderContainer .userImageContainer img {
@@ -71,4 +75,13 @@
 
 .text {
   color: var(--greyText);
+}
+
+.profilePictureButton {
+  position: absolute;
+  display: none;
+}
+
+.userImageContainer:hover .profilePictureButton {
+  display: block;
 }
