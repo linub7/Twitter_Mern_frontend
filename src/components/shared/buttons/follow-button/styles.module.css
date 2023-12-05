@@ -5,11 +5,14 @@
   padding: 7px 15px;
   border-radius: 60px;
   margin-left: var(--spacing);
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .followButton:hover {
   background-color: var(--blueBackground);
+  color: var(--blue);
 }
 
 .following {

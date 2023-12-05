@@ -65,6 +65,8 @@ const Signup = () => {
       username: data?.data?.user?.username,
       email: data?.data?.user?.email,
       profilePic: data?.data?.user?.profilePic?.url,
+      following: data?.data?.user?.following,
+      followers: data?.data?.user?.followers,
       token: data?.token,
     };
     dispatch(authenticationAction(payload));

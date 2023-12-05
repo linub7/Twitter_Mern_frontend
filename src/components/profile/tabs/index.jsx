@@ -2,11 +2,18 @@ import { Link } from 'react-router-dom';
 
 import styles from './styles.module.css';
 
-const ProfilePageTabs = ({ username, colOneTitle, colTwoTitle, activeTab }) => {
+const ProfilePageTabs = ({
+  colOnePath,
+  colTwoPath,
+  colOneTitle,
+  colTwoTitle,
+  activeTab,
+}) => {
   return (
     <div className={styles.container}>
       <Link
-        to={`/profile/${username}`}
+        // to={`/profile/${username}`}
+        to={colOnePath}
         className={`${styles.col} ${
           activeTab === colOneTitle ? styles?.active : ''
         }`}
@@ -14,7 +21,8 @@ const ProfilePageTabs = ({ username, colOneTitle, colTwoTitle, activeTab }) => {
         <span className={styles.title}>{colOneTitle}</span>
       </Link>
       <Link
-        to={`/profile/${username}/replies`}
+        // to={`/profile/${username}/replies`}
+        to={colTwoPath}
         className={`${styles.col} ${
           activeTab === colTwoTitle ? styles?.active : ''
         }`}

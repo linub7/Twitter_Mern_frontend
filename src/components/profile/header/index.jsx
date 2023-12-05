@@ -11,11 +11,14 @@ const ProfilePageHeader = ({
   userProfileSource,
   displayName,
   followingCount,
-  followersCount,
+  followers,
+  handleToggleUserFollow = () => {},
 }) => {
   const navigate = useNavigate();
   const handleNavigateToUserMessages = () =>
     navigate(`/messages/${profileDataId}`);
+
+  const isFollowing = followers?.includes(currentUserId);
   return (
     <div className={styles.profileHeaderContainer}>
       <div className={styles.coverPhotoContainer}>
@@ -32,8 +35,8 @@ const ProfilePageHeader = ({
             <IoMailOutline size={20} />
           </button>
           <FollowButton
-            isFollowing={false}
-            onClick={() => console.log('follow button clicked')}
+            isFollowing={isFollowing}
+            onClick={handleToggleUserFollow}
           />
         </div>
       ) : (
@@ -47,12 +50,12 @@ const ProfilePageHeader = ({
         <div className={styles.followingsContainer}>
           <Link to={`/profile/${username}/following`} className={styles.value}>
             <span className={styles.count}>{followingCount}</span>
-            <span className={styles.text}>Followers</span>
+            <span className={styles.text}>Following</span>
           </Link>
 
           <Link to={`/profile/${username}/followers`} className={styles.value}>
-            <span className={styles.count}>{followersCount}</span>
-            <span className={styles.text}>Following</span>
+            <span className={styles.count}>{followers?.length}</span>
+            <span className={styles.text}>Followers</span>
           </Link>
         </div>
       </div>

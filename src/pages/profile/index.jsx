@@ -93,13 +93,14 @@ const Profile = () => {
             profileDataId={profileData?._id}
             displayName={`${profileData?.firstName} ${profileData?.lastName}`}
             followingCount={profileData?.following?.length}
-            followersCount={profileData?.followers?.length}
+            followers={profileData?.followers}
           />
           <ProfilePageTabs
             colOneTitle={'Posts'}
             colTwoTitle={'Replies'}
             activeTab={'Posts'}
-            username={profileData?.username}
+            colOnePath={`/profile/${profileData?.username}`}
+            colTwoPath={`/profile/${profileData?.username}/replies`}
           />
           <PostsList
             posts={posts}

@@ -1,3 +1,5 @@
+import { IoCheckmarkCircleOutline  } from 'react-icons/io5';
+
 import styles from './styles.module.css';
 
 const FollowButton = ({ isFollowing = false, onClick = () => {} }) => {
@@ -11,6 +13,7 @@ const FollowButton = ({ isFollowing = false, onClick = () => {} }) => {
       onClick={onClick}
     >
       {isFollowing ? 'Following' : 'Follow'}
+      {isFollowing && <IoCheckmarkCircleOutline  size={20} />}
     </button>
   );
 };

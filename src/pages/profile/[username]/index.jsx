@@ -5,7 +5,7 @@ import { HashLoader } from 'react-spinners';
 import toast from 'react-hot-toast';
 
 import MainLayout from 'components/shared/main-layout';
-import { getUserHandler } from 'api/user';
+import { getUserHandler, toggleUserFollowHandler } from 'api/user';
 import {
   removePostAction,
   setPostsAction,
@@ -89,6 +89,19 @@ const UserProfile = () => {
     dispatch(removePostAction(data?.data?.data));
   }, [targetPost?._id, dispatch, user?.token, deletePostLoading]);
 
+  const handleToggleUserFollow = useCallback(async () => {
+    const { err, data } = await toggleUserFollowHandler(
+      profileData?._id,
+      user?.token
+    );
+
+    if (err) {
+      console.log(err);
+      return toast.error(err?.message);
+    }
+    dispatch(setProfileData(data?.data?.data?.user));
+  }, [dispatch, profileData?._id, user?.token]);
+
   return (
     <MainLayout pageTitle={params?.username}>
       {isLoading ? (
@@ -106,13 +119,15 @@ const UserProfile = () => {
             profileDataId={profileData?._id}
             displayName={`${profileData?.firstName} ${profileData?.lastName}`}
             followingCount={profileData?.following?.length}
-            followersCount={profileData?.followers?.length}
+            followers={profileData?.followers}
+            handleToggleUserFollow={handleToggleUserFollow}
           />
           <ProfilePageTabs
             colOneTitle={'Posts'}
             colTwoTitle={'Replies'}
             activeTab={'Posts'}
-            username={profileData?.username}
+            colOnePath={`/profile/${profileData?.username}`}
+            colTwoPath={`/profile/${profileData?.username}/replies`}
           />
           <PostsList
             posts={posts}
