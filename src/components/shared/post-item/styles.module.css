@@ -131,3 +131,8 @@
   color: var(--blue);
   border-radius: 50%;
 }
+
+.pinnedPostText span {
+  color: var(--greyText);
+  font-size: 12px;
+}

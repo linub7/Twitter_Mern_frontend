@@ -1,0 +1,44 @@
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.header__left {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.header__right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  /* gap: 2px; */
+}
+
+.displayName {
+  font-weight: 800;
+}
+
+.displayName:hover {
+  text-decoration: underline;
+}
+
+.username,
+.date {
+  color: var(--greyText);
+}
+
+.header__right button {
+  padding: 5px;
+}
+
+.header__right button:hover {
+  background-color: var(--buttonHoverBg);
+  color: var(--blue);
+  border-radius: 50%;
+}
+
+.pinnedPostText span {
+  color: var(--greyText);
+  font-size: 12px;
+}

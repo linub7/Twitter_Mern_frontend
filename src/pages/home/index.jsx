@@ -10,11 +10,13 @@ import {
   createPostHandler,
   deletePostHandler,
   getPostsHandler,
+  updatePostHandler,
 } from 'api/post';
 import {
   addPostToPostsAction,
   setPostsAction,
   removePostAction,
+  updatePostStatus,
 } from 'redux-store/slices/post';
 import CustomLoader from 'components/shared/custom-loader';
 import PostsList from 'components/shared/posts-list';
@@ -32,6 +34,8 @@ const Home = () => {
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   const [deletePostLoading, setDeletePostLoading] = useState(false);
   const [targetPost, setTargetPost] = useState(null);
+  const [isPinMessageModalOpen, setIsPinMessageModalOpen] = useState(false);
+  const [pinMessageLoading, setPinMessageLoading] = useState(false);
 
   const { user } = useSelector((state) => state.user);
   const { posts } = useSelector((state) => state.post);
@@ -57,6 +61,11 @@ const Home = () => {
 
   const handleOpenWarningModal = (post) => {
     setIsWarningModalOpen(true);
+    setTargetPost(post);
+  };
+
+  const handleOpenPostPinModal = (post) => {
+    setIsPinMessageModalOpen(true);
     setTargetPost(post);
   };
 
@@ -101,6 +110,26 @@ const Home = () => {
     dispatch(removePostAction(data?.data?.data));
   }, [targetPost?._id, dispatch, user?.token, deletePostLoading]);
 
+  const handleTogglePostPin = useCallback(async () => {
+    setPinMessageLoading(true);
+    // TODO: Create 2 separate route for pin and unpin post -> if pinned: true ? unpin : pin
+    const values = { pinned: targetPost?.pinned ? false : true };
+    const { err, data } = await updatePostHandler(
+      targetPost?._id,
+      values,
+      user?.token
+    );
+
+    if (err) {
+      console.log(err);
+      setPinMessageLoading(false);
+      return toast.error(err?.message);
+    }
+    setPinMessageLoading(false);
+    setIsPinMessageModalOpen(false);
+    dispatch(updatePostStatus(data?.data?.data));
+  }, [targetPost?._id, targetPost?.pinned, dispatch, user?.token]);
+
   return (
     <MainLayout pageTitle={'Home'}>
       {getPostsLoading ? (
@@ -126,6 +155,7 @@ const Home = () => {
               token={user?.token}
               handleClickChatBubble={handleClickChatBubble}
               handleOpenWarningModal={handleOpenWarningModal}
+              handleOpenPostPinModal={handleOpenPostPinModal}
             />
           )}
         </>
@@ -145,10 +175,21 @@ const Home = () => {
 
       {isWarningModalOpen && (
         <WarningModal
+          warnMessage="Are you Sure?"
           loading={deletePostLoading}
           setIsWarningModalOpen={setIsWarningModalOpen}
           setTargetPost={setTargetPost}
           onSubmit={handleDeletePost}
+        />
+      )}
+
+      {isPinMessageModalOpen && (
+        <WarningModal
+          warnMessage="This post will appear at the top of your profile. You can only pin on post"
+          loading={pinMessageLoading}
+          setTargetPost={setTargetPost}
+          setIsWarningModalOpen={setIsPinMessageModalOpen}
+          onSubmit={handleTogglePostPin}
         />
       )}
     </MainLayout>

@@ -1,4 +1,6 @@
 import PostItem from 'components/shared/post-item';
+import { useEffect, useState } from 'react';
+import { sortItems } from 'utils/helper';
 
 const PostsList = ({
   posts,
@@ -7,8 +9,21 @@ const PostsList = ({
   isInReplyMode,
   handleClickChatBubble = () => {},
   handleOpenWarningModal = () => {},
+  handleOpenPostPinModal = () => {},
 }) => {
-  return posts?.map((post) => {
+  const [isPinnedExisted, setIsPinnedExisted] = useState(false);
+  useEffect(() => {
+    for (const post of posts) {
+      post?.pinned ? setIsPinnedExisted(true) : setIsPinnedExisted(false);
+    }
+    return () => {
+      setIsPinnedExisted(false);
+    };
+  }, [posts]);
+
+  const sortedPosts = sortItems(posts, isPinnedExisted);
+
+  return sortedPosts?.map((post) => {
     const isRetweetedPost =
       post?.retweetData !== undefined || post?.retweetData?._id !== undefined;
     return (
@@ -22,6 +37,7 @@ const PostsList = ({
         handleClickChatBubble={handleClickChatBubble}
         isInReplyMode={isInReplyMode}
         handleOpenWarningModal={handleOpenWarningModal}
+        handleOpenPostPinModal={handleOpenPostPinModal}
       />
     );
   });

@@ -95,3 +95,21 @@ export const postRetweetHandler = async (id, token) => {
     return { err: response?.data };
   }
 };
+
+export const updatePostHandler = async (id, values, token) => {
+  try {
+    const { data } = await client.put(
+      `/posts/${id}`,
+      { ...values },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};

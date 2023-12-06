@@ -5,6 +5,7 @@ import ModalContainer from '../modal-container';
 
 const WarningModal = ({
   loading = false,
+  warnMessage = '',
   setIsWarningModalOpen = () => {},
   setTargetPost = () => {},
   onSubmit = () => {},
@@ -29,7 +30,7 @@ const WarningModal = ({
         </CustomLoader>
       ) : (
         <>
-          <h1>Are you Sure?</h1>
+          <h1>{warnMessage}</h1>
         </>
       )}
     </ModalContainer>

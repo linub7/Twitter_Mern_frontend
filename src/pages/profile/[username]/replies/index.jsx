@@ -155,6 +155,7 @@ const UserProfileReplies = () => {
 
       {isWarningModalOpen && (
         <WarningModal
+          warnMessage="Are you Sure?"
           loading={deletePostLoading}
           setIsWarningModalOpen={setIsWarningModalOpen}
           setTargetPost={setTargetPost}

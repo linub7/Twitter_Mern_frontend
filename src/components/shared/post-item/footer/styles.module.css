@@ -1,0 +1,50 @@
+.postFooter {
+  display: flex;
+  align-items: center;
+}
+
+.postFooter .postButtonContainer {
+  flex: 1;
+  display: flex;
+}
+
+.postFooter .postButtonContainer button {
+  padding: 5px;
+}
+
+.postButtonContainer button:hover {
+  background-color: var(--buttonHoverBg);
+  color: var(--blue);
+  border-radius: 50%;
+}
+
+.activeLike button:hover {
+  background-color: var(--redBackground);
+  color: var(--red);
+  border-radius: 50%;
+}
+
+.activeRetweeted button:hover {
+  background-color: var(--greenBackground);
+  color: var(--green);
+  border-radius: 50%;
+}
+
+.postActionContainer {
+  padding-left: 35px;
+  font-size: 13px;
+  color: var(--greyText);
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.replyFlag {
+  margin-bottom: 5px;
+  color: var(--greyText);
+}
+
+.replyFlag a {
+  color: var(--blue);
+}

@@ -38,3 +38,20 @@ export const dataURLtoFile = (dataurl, filename) => {
   }
   return new File([u8arr], filename, { type: mime });
 };
+
+const sortPinnedItems = (items) => {
+  return items.filter((item) => item.pinned === true);
+};
+
+const sortUnpinnedItems = (items) => {
+  return items.filter((item) => item.pinned !== true);
+};
+
+export const sortItems = (items, isPinned) => {
+  const pinnedItems = sortPinnedItems(items);
+  const unpinnedItems = sortUnpinnedItems(items);
+
+  return isPinned
+    ? pinnedItems.concat(unpinnedItems)
+    : unpinnedItems.concat(pinnedItems);
+};
