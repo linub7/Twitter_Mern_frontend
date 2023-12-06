@@ -8,6 +8,7 @@ const initialState = {
     lastName: '',
     email: '',
     picturePic: '',
+    coverPhoto: '',
     following: [],
     followers: [],
     token: Cookie.get('token') ? JSON.parse(Cookie.get('token')) : null,
@@ -44,6 +45,7 @@ const userSlice = createSlice({
         lastName: '',
         email: '',
         picturePic: '',
+        coverPhoto: '',
         token: null,
       };
     },

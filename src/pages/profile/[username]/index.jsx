@@ -120,6 +120,7 @@ const UserProfile = () => {
             displayName={`${profileData?.firstName} ${profileData?.lastName}`}
             followingCount={profileData?.following?.length}
             followers={profileData?.followers}
+            userCoverSource={profileData?.coverPhoto?.url}
             handleToggleUserFollow={handleToggleUserFollow}
           />
           <ProfilePageTabs

@@ -46,7 +46,22 @@ export const getMeHandler = async (replyToMode = '', token) => {
 
 export const updateProfilePhotoHandler = async (formData, token) => {
   try {
-    const { data } = await client.put(`/auth/me`, formData, {
+    const { data } = await client.put(`/auth/me/update-profile`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};
+
+export const updateCoverPhotoHandler = async (formData, token) => {
+  try {
+    const { data } = await client.patch(`/auth/me/update-cover`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'multipart/form-data',

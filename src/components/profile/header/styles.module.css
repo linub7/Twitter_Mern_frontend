@@ -1,4 +1,4 @@
-.profileHeaderContainer .coverPhotoContainer {
+.profileHeaderContainer .coverPhotoSection {
   height: 180px;
   background-color: var(--blue);
   position: relative;
@@ -77,11 +77,26 @@
   color: var(--greyText);
 }
 
-.profilePictureButton {
+.profilePictureButton,
+.coverPhotoButton {
   position: absolute;
   display: none;
 }
 
-.userImageContainer:hover .profilePictureButton {
+.userImageContainer:hover .profilePictureButton,
+.coverPhotoSection:hover .coverPhotoButton {
   display: block;
+}
+
+.coverPhotoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.coverPhotoImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

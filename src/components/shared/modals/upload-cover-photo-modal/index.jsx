@@ -11,15 +11,15 @@ import { IMAGE_TYPES } from 'constants';
 import AttachmentInput from 'components/shared/inputs/attachment';
 import { IMAGE_SIZE } from 'constants';
 import { dataURLtoFile } from 'utils/helper';
-import { updateProfilePhotoHandler } from 'api/auth';
+import { updateCoverPhotoHandler } from 'api/auth';
 import { authenticationAction } from 'redux-store/slices/user';
 import CustomCropper from 'components/shared/custom-cropper';
 
-const UploadImageModal = ({
+const UploadCoverPhotoModal = ({
   loading = true,
   user,
-  setUploadImageLoading = () => {},
-  setIsUploadImageModalOpen = () => {},
+  setUploadCoverPhotoLoading = () => {},
+  setIsUploadCoverPhotoModalOpen = () => {},
 }) => {
   const [photo, setPhoto] = useState();
   const [cropData, setCropData] = useState('#');
@@ -30,7 +30,7 @@ const UploadImageModal = ({
   const dispatch = useDispatch();
 
   const handleCloseModal = () => {
-    setIsUploadImageModalOpen(false);
+    setIsUploadCoverPhotoModalOpen(false);
     setPhoto({});
   };
 
@@ -69,19 +69,16 @@ const UploadImageModal = ({
   const handleSendImage = useCallback(async () => {
     const file = dataURLtoFile(cropData, photo?.file?.name);
     const formData = new FormData();
-    formData.append('profilePic', file);
-    setUploadImageLoading(true);
-    const { err, data } = await updateProfilePhotoHandler(
-      formData,
-      user?.token
-    );
+    formData.append('coverPhoto', file);
+    setUploadCoverPhotoLoading(true);
+    const { err, data } = await updateCoverPhotoHandler(formData, user?.token);
     if (err) {
       console.log(err);
-      setUploadImageLoading(false);
+      setUploadCoverPhotoLoading(false);
       return toast.error(err?.message);
     }
-    setUploadImageLoading(false);
-    setIsUploadImageModalOpen(false);
+    setUploadCoverPhotoLoading(false);
+    setIsUploadCoverPhotoModalOpen(false);
     setPhoto({});
     const { token, ...rest } = user;
     const payload = { token, ...data?.data?.data };
@@ -90,9 +87,9 @@ const UploadImageModal = ({
 
   return (
     <ModalContainer
-      header={'Upload image'}
+      header={'Upload cover photo'}
       onClose={handleCloseModal}
-      submitButtonTitle={'Upload My Image'}
+      submitButtonTitle={'Upload My Cover Photo'}
       disabled={loading}
       onSubmit={handleSendImage}
       loading={loading}
@@ -109,7 +106,7 @@ const UploadImageModal = ({
               <CustomCropper
                 cropperRef={cropperRef}
                 src={photo?.imgData}
-                initialAspectRatio={1}
+                initialAspectRatio={16 / 9}
               />
               {!isShowModalFooter && (
                 <button onClick={getCropData} className={styles.cropButton}>
@@ -135,4 +132,4 @@ const UploadImageModal = ({
   );
 };
 
-export default UploadImageModal;
+export default UploadCoverPhotoModal;

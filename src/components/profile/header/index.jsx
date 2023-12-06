@@ -12,8 +12,10 @@ const ProfilePageHeader = ({
   displayName,
   followingCount,
   followers,
+  userCoverSource,
   handleToggleUserFollow = () => {},
   setIsUploadImageModalOpen = () => {},
+  setIsUploadCoverPhotoModalOpen = () => {},
 }) => {
   const navigate = useNavigate();
   const handleNavigateToUserMessages = () =>
@@ -22,9 +24,30 @@ const ProfilePageHeader = ({
   const isFollowing = followers?.includes(currentUserId);
 
   const handleClickCamera = () => setIsUploadImageModalOpen(true);
+
+  const handleClickCoverPhotoCamera = () =>
+    setIsUploadCoverPhotoModalOpen(true);
+
   return (
     <div className={styles.profileHeaderContainer}>
-      <div className={styles.coverPhotoContainer}>
+      <div className={styles.coverPhotoSection}>
+        <div className={styles.coverPhotoContainer}>
+          {userCoverSource && (
+            <img
+              src={userCoverSource}
+              alt="user cover"
+              className={styles.coverPhotoImage}
+            />
+          )}
+          {profileDataId === currentUserId && (
+            <button
+              className={styles.coverPhotoButton}
+              onClick={handleClickCoverPhotoCamera}
+            >
+              <IoCameraOutline size={60} color="#fff" />
+            </button>
+          )}
+        </div>
         <div className={styles.userImageContainer}>
           <img src={userProfileSource} alt={username} />
           {profileDataId === currentUserId && (
@@ -32,7 +55,7 @@ const ProfilePageHeader = ({
               className={styles.profilePictureButton}
               onClick={handleClickCamera}
             >
-              <IoCameraOutline size={60} color="rgba(0,0,0,0.6)" />
+              <IoCameraOutline size={60} color="#fff" />
             </button>
           )}
         </div>

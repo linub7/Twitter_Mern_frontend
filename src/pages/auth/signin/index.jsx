@@ -54,6 +54,7 @@ const Signin = () => {
       username: data?.data?.user?.username,
       email: data?.data?.user?.email,
       profilePic: data?.data?.user?.profilePic?.url,
+      coverPhoto: data?.data?.user?.coverPhoto?.url,
       following: data?.data?.user?.following,
       followers: data?.data?.user?.followers,
       token: data?.token,
