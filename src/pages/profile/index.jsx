@@ -200,7 +200,11 @@ const Profile = () => {
       )}
       {isPinMessageModalOpen && (
         <WarningModal
-          warnMessage="This post will appear at the top of your profile. You can only pin on post"
+          warnMessage={
+            targetPost?.pinned
+              ? 'Unpin this post?'
+              : 'This post will appear at the top of your profile.'
+          }
           loading={pinMessageLoading}
           setTargetPost={setTargetPost}
           setIsWarningModalOpen={setIsPinMessageModalOpen}

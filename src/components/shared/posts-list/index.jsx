@@ -1,5 +1,5 @@
-import PostItem from 'components/shared/post-item';
 import { useEffect, useState } from 'react';
+import PostItem from 'components/shared/post-item';
 import { sortItems } from 'utils/helper';
 
 const PostsList = ({
