@@ -11,7 +11,7 @@ import { togglePostLikeHandler, postRetweetHandler } from 'api/post';
 import {
   addPostToPostsAction,
   removePostAction,
-  updatePostStatus,
+  updatePostStatusAction,
 } from 'redux-store/slices/post';
 import PostItemHeader from './header';
 import PostItemFooter from './footer';
@@ -23,6 +23,7 @@ const PostItem = ({
   retweetedBy,
   isRetweetedPost,
   isInReplyMode = false,
+  isShowHeaderRight = true,
   handleClickChatBubble = () => {},
   handleOpenWarningModal = () => {},
   handleOpenPostPinModal = () => {},
@@ -82,7 +83,7 @@ const PostItem = ({
       dispatch(removePostAction(rePost));
     }
     // update main post
-    dispatch(updatePostStatus(post));
+    dispatch(updatePostStatusAction(post));
   }, [postId, dispatch, token]);
 
   const handleToggleLike = useCallback(async () => {
@@ -92,7 +93,7 @@ const PostItem = ({
       return toast.error(err?.message);
     }
 
-    dispatch(updatePostStatus(data?.data?.data));
+    dispatch(updatePostStatusAction(data?.data?.data));
   }, [postId, dispatch, token]);
 
   return (
@@ -126,6 +127,7 @@ const PostItem = ({
             date={date}
             post={post}
             userId={userId}
+            isShowHeaderRight={isShowHeaderRight}
             handleOpenPostPinModal={handleOpenPostPinModal}
             handleOpenWarningModal={handleOpenWarningModal}
           />

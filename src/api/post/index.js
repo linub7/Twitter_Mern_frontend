@@ -113,3 +113,17 @@ export const updatePostHandler = async (id, values, token) => {
     return { err: response?.data };
   }
 };
+
+export const searchPostsHandler = async (query, token) => {
+  try {
+    const { data } = await client.get(`/posts/search?content=${query}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};

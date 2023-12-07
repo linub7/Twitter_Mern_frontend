@@ -7,6 +7,7 @@ const PostsList = ({
   userId,
   token,
   isInReplyMode,
+  isShowHeaderRight = true,
   handleClickChatBubble = () => {},
   handleOpenWarningModal = () => {},
   handleOpenPostPinModal = () => {},
@@ -34,8 +35,9 @@ const PostsList = ({
         userId={userId}
         token={token}
         isRetweetedPost={isRetweetedPost}
-        handleClickChatBubble={handleClickChatBubble}
         isInReplyMode={isInReplyMode}
+        isShowHeaderRight={isShowHeaderRight}
+        handleClickChatBubble={handleClickChatBubble}
         handleOpenWarningModal={handleOpenWarningModal}
         handleOpenPostPinModal={handleOpenPostPinModal}
       />

@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom';
-import styles from './styles.module.css';
-import PostItemFooterButton from '../footer-button';
 import { BsFillPinFill, BsPin } from 'react-icons/bs';
 import { IoCloseOutline } from 'react-icons/io5';
+
+import styles from './styles.module.css';
+import PostItemFooterButton from '../footer-button';
 
 const PostItemHeader = ({
   post,
   userId,
   date,
+  isShowHeaderRight = true,
   handleOpenPostPinModal = () => {},
   handleOpenWarningModal = () => {},
 }) => {
@@ -28,22 +30,28 @@ const PostItemHeader = ({
         <span className={styles.date}>{date}</span>
       </div>
 
-      <div className={styles.header__right}>
-        {userId === post?.postedBy?._id && (
-          <>
-            <PostItemFooterButton onClick={() => handleOpenPostPinModal(post)}>
-              {post?.pinned ? (
-                <BsFillPinFill size={17} color="#1fa2f1" />
-              ) : (
-                <BsPin size={17} color="#34495e" />
-              )}
-            </PostItemFooterButton>
-            <PostItemFooterButton onClick={() => handleOpenWarningModal(post)}>
-              <IoCloseOutline size={17} color="#e22252" />
-            </PostItemFooterButton>
-          </>
-        )}
-      </div>
+      {isShowHeaderRight && (
+        <div className={styles.header__right}>
+          {userId === post?.postedBy?._id && (
+            <>
+              <PostItemFooterButton
+                onClick={() => handleOpenPostPinModal(post)}
+              >
+                {post?.pinned ? (
+                  <BsFillPinFill size={17} color="#1fa2f1" />
+                ) : (
+                  <BsPin size={17} color="#34495e" />
+                )}
+              </PostItemFooterButton>
+              <PostItemFooterButton
+                onClick={() => handleOpenWarningModal(post)}
+              >
+                <IoCloseOutline size={17} color="#e22252" />
+              </PostItemFooterButton>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 };

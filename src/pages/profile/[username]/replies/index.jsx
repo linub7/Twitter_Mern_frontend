@@ -9,7 +9,7 @@ import { getUserHandler, toggleUserFollowHandler } from 'api/user';
 import {
   removePostAction,
   setPostsAction,
-  setProfileData,
+  setProfileDataAction,
 } from 'redux-store/slices/post';
 import CustomLoader from 'components/shared/custom-loader';
 import NoResult from 'components/shared/no-result';
@@ -71,7 +71,7 @@ const UserProfileReplies = () => {
       return;
     }
     setIsLoading(false);
-    dispatch(setProfileData(data?.data?.data?.user));
+    dispatch(setProfileDataAction(data?.data?.data?.user));
     dispatch(setPostsAction(data?.data?.data?.replyPosts));
   };
 
@@ -99,7 +99,7 @@ const UserProfileReplies = () => {
       console.log(err);
       return toast.error(err?.message);
     }
-    dispatch(setProfileData(data?.data?.data?.user));
+    dispatch(setProfileDataAction(data?.data?.data?.user));
   }, [dispatch, profileData?._id, user?.token]);
 
   return (

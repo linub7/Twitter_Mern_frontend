@@ -25,7 +25,7 @@ const postSlice = createSlice({
 
       state.posts = tmpPosts;
     },
-    updatePostStatus: (state, action) => {
+    updatePostStatusAction: (state, action) => {
       const { payload } = action;
 
       let tmpPosts = [...state.posts];
@@ -35,7 +35,10 @@ const postSlice = createSlice({
 
       state.posts = tmpPosts;
     },
-    setProfileData: (state, action) => {
+    makeEmptyPostsAction: (state, action) => {
+      state.posts = [];
+    },
+    setProfileDataAction: (state, action) => {
       const { payload } = action;
       state.profileData = payload;
     },
@@ -46,9 +49,10 @@ export const {
   actions: {
     setPostsAction,
     addPostToPostsAction,
-    updatePostStatus,
+    updatePostStatusAction,
     removePostAction,
-    setProfileData,
+    setProfileDataAction,
+    makeEmptyPostsAction,
   },
 } = postSlice;
 

@@ -16,7 +16,7 @@ import {
   addPostToPostsAction,
   setPostsAction,
   removePostAction,
-  updatePostStatus,
+  updatePostStatusAction,
 } from 'redux-store/slices/post';
 import CustomLoader from 'components/shared/custom-loader';
 import PostsList from 'components/shared/posts-list';
@@ -127,7 +127,7 @@ const Home = () => {
     }
     setPinMessageLoading(false);
     setIsPinMessageModalOpen(false);
-    dispatch(updatePostStatus(data?.data?.data));
+    dispatch(updatePostStatusAction(data?.data?.data));
   }, [targetPost?._id, targetPost?.pinned, dispatch, user?.token]);
 
   return (

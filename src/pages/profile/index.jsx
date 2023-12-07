@@ -8,8 +8,8 @@ import { getMeHandler } from 'api/auth';
 import {
   removePostAction,
   setPostsAction,
-  setProfileData,
-  updatePostStatus,
+  setProfileDataAction,
+  updatePostStatusAction,
 } from 'redux-store/slices/post';
 import CustomLoader from 'components/shared/custom-loader';
 import { getImageSource } from 'utils/helper';
@@ -68,7 +68,7 @@ const Profile = () => {
       return toast.error(err?.message);
     }
     setIsLoading(false);
-    dispatch(setProfileData(data?.data?.data?.me));
+    dispatch(setProfileDataAction(data?.data?.data?.me));
     dispatch(setPostsAction(data?.data?.data?.posts));
   };
 
@@ -118,7 +118,7 @@ const Profile = () => {
     }
     setPinMessageLoading(false);
     setIsPinMessageModalOpen(false);
-    dispatch(updatePostStatus(data?.data?.data));
+    dispatch(updatePostStatusAction(data?.data?.data));
   }, [targetPost?._id, targetPost?.pinned, dispatch, user?.token]);
 
   return (

@@ -18,6 +18,7 @@ import UserMessages from 'pages/messages/[id]';
 import UserProfileFollowing from 'pages/profile/[username]/following';
 import UserProfileFollowers from 'pages/profile/[username]/followers';
 import UserProfileReplies from 'pages/profile/[username]/replies';
+import SearchUsers from 'pages/search/users';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route element={<LoggedInRoutes />}>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/search/users" element={<SearchUsers />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/messages/:id" element={<UserMessages />} />

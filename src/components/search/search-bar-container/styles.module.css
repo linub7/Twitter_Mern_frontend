@@ -1,0 +1,43 @@
+.searchBarContainer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: var(--greyText);
+  padding: 10px var(--spacing);
+  /* border: 1px solid var(--greyText); */
+  border-radius: 50px;
+  margin: 10px var(--spacing);
+  background-color: var(--lightGrey);
+}
+
+.searchBox {
+  border: none;
+  outline: none;
+  color: var(--greyText);
+  font-size: 16px;
+  background-color: transparent;
+  flex: 1;
+}
+
+/* .searchBarContainer {
+  position: relative;
+  color: var(--greyText);
+  padding: 10px var(--spacing);
+}
+
+
+.searchBarContainer svg {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.innerContainer {
+  width: 100%;
+}
+
+.searchBox {
+  height: 36px;
+  /* width: 100%; */
+/* padding: 5px 15px 5px 40px; */
+/* } */
