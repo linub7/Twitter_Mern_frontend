@@ -5,6 +5,7 @@ import createFilter from 'redux-persist-transform-filter';
 
 import userReducer from './slices/user';
 import postReducer from './slices/post';
+import chatReducer from './slices/chat';
 
 const saveUserOnlyFilter = createFilter('user', ['user']);
 
@@ -19,6 +20,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   user: userReducer,
   post: postReducer,
+  chat: chatReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

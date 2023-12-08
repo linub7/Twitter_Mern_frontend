@@ -24,7 +24,7 @@ const SearchUsers = () => {
   useEffect(() => {
     const delaySearch = setTimeout(async () => {
       setUsers();
-      if (!searchTerm || searchTerm === '') {
+      if (!searchTerm || searchTerm?.trim() === '') {
         setUsers();
         setNoResultFound(false);
         return;

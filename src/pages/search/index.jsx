@@ -43,7 +43,7 @@ const Search = () => {
   useEffect(() => {
     const delaySearch = setTimeout(async () => {
       handleMakeEmptyAction();
-      if (!searchTerm || searchTerm === '') {
+      if (!searchTerm || searchTerm?.trim() === '') {
         handleMakeEmptyAction();
         setNoResultFound(false);
         return;

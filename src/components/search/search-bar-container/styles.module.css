@@ -18,26 +18,3 @@
   background-color: transparent;
   flex: 1;
 }
-
-/* .searchBarContainer {
-  position: relative;
-  color: var(--greyText);
-  padding: 10px var(--spacing);
-}
-
-
-.searchBarContainer svg {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-}
-
-.innerContainer {
-  width: 100%;
-}
-
-.searchBox {
-  height: 36px;
-  /* width: 100%; */
-/* padding: 5px 15px 5px 40px; */
-/* } */

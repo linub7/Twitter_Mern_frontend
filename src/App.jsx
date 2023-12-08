@@ -19,6 +19,8 @@ import UserProfileFollowing from 'pages/profile/[username]/following';
 import UserProfileFollowers from 'pages/profile/[username]/followers';
 import UserProfileReplies from 'pages/profile/[username]/replies';
 import SearchUsers from 'pages/search/users';
+import NewMessage from 'pages/messages/new';
+import ChatMessages from 'pages/messages/chat/[chatId]';
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
           <Route path="/search/users" element={<SearchUsers />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/messages" element={<Messages />} />
+          <Route path="/messages/new" element={<NewMessage />} />
+          <Route path="/messages/chat/:chatId" element={<ChatMessages />} />
           <Route path="/messages/:id" element={<UserMessages />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/:username" element={<UserProfile />} />

@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button {
+  background-color: var(--blue);
+  color: #fff;
+  padding: 7px 20px;
+  border-radius: 40px;
+  margin-top: var(--spacing);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.button:disabled {
+  background-color: var(--lightGrey);
+  color: var(--greyText);
+}
+
+.icon {
+  margin: var(--spacing) 0;
+}

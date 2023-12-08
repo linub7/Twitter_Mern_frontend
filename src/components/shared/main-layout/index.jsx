@@ -4,7 +4,14 @@ import gsap from 'gsap';
 import CustomNav from '../custom-nav';
 import styles from './styles.module.css';
 
-const MainLayout = ({ pageTitle, children }) => {
+const MainLayout = ({
+  isShowActionSection = false,
+  pageTitle,
+  Icon,
+  iconColor,
+  children,
+  handleClickActionIcon = () => {},
+}) => {
   const navRef = useRef();
   const mainRef = useRef();
   const thirdRef = useRef();
@@ -38,6 +45,14 @@ const MainLayout = ({ pageTitle, children }) => {
         <div className={styles.mainSectionContainer} ref={mainRef}>
           <div className={styles.titleContainer}>
             <h1>{pageTitle}</h1>
+            {isShowActionSection && (
+              <span
+                onClick={handleClickActionIcon}
+                className={styles.actionIcon}
+              >
+                <Icon size={35} color={iconColor} />
+              </span>
+            )}
           </div>
           {children}
         </div>

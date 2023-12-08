@@ -36,6 +36,14 @@
   flex: 1;
 }
 
+.actionIcon {
+  cursor: pointer;
+}
+
+.actionIcon:hover svg {
+  scale: 1.1;
+}
+
 @media (max-width: 640px) {
   .row {
     grid-template-columns: 75px 5fr;
