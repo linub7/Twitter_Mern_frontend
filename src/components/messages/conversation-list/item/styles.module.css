@@ -1,0 +1,57 @@
+.listItem {
+  padding: 7px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0; /* due to safari bug */
+  border-bottom: 1px solid var(--lightGrey);
+}
+
+.listItem:hover {
+  background-color: #f2f2f2;
+}
+
+.resultDetailsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.resultDetailsContainer .heading {
+  font-weight: 800;
+}
+
+.resultDetailsContainer .subText {
+  color: var(--greyText);
+  font-size: 14px;
+}
+
+.resultsImageContainer {
+  height: 40px;
+  width: 40px;
+  position: relative;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+
+.listItem .profilePic {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+}
+
+.groupChatImage .profilePic {
+  height: 65%;
+  width: 65%;
+  position: absolute;
+  bottom: 0;
+  margin: 0;
+  border: 2px solid #fff;
+}
+
+.groupChatImage .profilePic:first-of-type {
+  top: 0;
+  right: 0;
+}

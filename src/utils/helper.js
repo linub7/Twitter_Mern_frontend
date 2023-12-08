@@ -55,3 +55,39 @@ export const sortItems = (items, isPinned) => {
     ? pinnedItems.concat(unpinnedItems)
     : unpinnedItems.concat(pinnedItems);
 };
+
+export const getChatName = (chatData, userLoggedInId) => {
+  let chatName = chatData?.chatName;
+  if (!chatName) {
+    const otherChatUsers = getOtherChatUsers(chatData?.users, userLoggedInId);
+    const namesArray = otherChatUsers?.map(
+      (user) => `${user?.firstName} ${user?.lastName}`
+    );
+
+    chatName = namesArray.join(', ');
+  }
+
+  return chatName;
+};
+
+export const getChatImageElements = (chatData, userLoggedInId) => {
+  let images = [];
+  const otherChatUsers = getOtherChatUsers(chatData?.users, userLoggedInId);
+  images?.push(getUserChatImageElement(otherChatUsers[0]));
+
+  if (otherChatUsers?.length > 1) {
+    images?.push(getUserChatImageElement(otherChatUsers[1]));
+  }
+
+  return images;
+};
+
+const getOtherChatUsers = (users, userLoggedInId) => {
+  if (users?.length === 1) return users;
+
+  return users?.filter((item) => item?._id !== userLoggedInId);
+};
+
+const getUserChatImageElement = (user) => {
+  return getImageSource(user?.profilePic?.url);
+};

@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  conversations: [],
   groupChatUsers: [],
 };
 
@@ -8,6 +9,10 @@ const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
+    setConversationsAction: (state, action) => {
+      const { payload } = action;
+      state.conversations = payload;
+    },
     toggleSelectedUsersForGroupChatAction: (state, action) => {
       const { payload } = action;
 
@@ -25,8 +30,11 @@ const chatSlice = createSlice({
         state.groupChatUsers = [...tmpGroupChatUsers, payload];
       }
     },
-    makeEmptySelectedUsersForGroupChatAction: (state, action) => {
+    makeEmptySelectedUsersForGroupChatAction: (state) => {
       state.groupChatUsers = [];
+    },
+    makeEmptyConversationsAction: (state) => {
+      state.conversations = [];
     },
   },
 });
@@ -35,6 +43,8 @@ export const {
   actions: {
     makeEmptySelectedUsersForGroupChatAction,
     toggleSelectedUsersForGroupChatAction,
+    setConversationsAction,
+    makeEmptyConversationsAction,
   },
 } = chatSlice;
 
