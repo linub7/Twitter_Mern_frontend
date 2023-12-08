@@ -1,14 +1,14 @@
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import { HashLoader } from 'react-spinners';
 import toast from 'react-hot-toast';
+import { HashLoader } from 'react-spinners';
 
 import MainLayout from 'components/shared/main-layout';
-import { getChatHandler } from 'api/chat';
+import { getChatByUserIdHandler } from 'api/chat';
 import CustomLoader from 'components/shared/custom-loader';
 
-const ChatMessages = () => {
+const UserMessages = () => {
   const [loading, setLoading] = useState(false);
 
   const params = useParams();
@@ -16,23 +16,27 @@ const ChatMessages = () => {
   const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
-    handleGetChat();
+    handleGetChatByUserId();
 
     return () => {};
-  }, [params?.chatId]);
+  }, [params?.userId]);
 
-  const handleGetChat = async () => {
+  const handleGetChatByUserId = async () => {
     setLoading(true);
-    const { err, data } = await getChatHandler(params?.chatId, user?.token);
+    const { err, data } = await getChatByUserIdHandler(
+      params?.userId,
+      user?.token
+    );
     if (err) {
       console.log(err);
       setLoading(false);
-      navigate('/messages');
+      navigate('/');
       return toast.error(err?.message);
     }
     setLoading(false);
     console.log(data?.data?.data);
   };
+
   return (
     <MainLayout pageTitle={'Chat'}>
       {loading ? (
@@ -46,4 +50,4 @@ const ChatMessages = () => {
   );
 };
 
-export default ChatMessages;
+export default UserMessages;

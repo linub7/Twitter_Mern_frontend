@@ -14,7 +14,7 @@ import Messages from 'pages/messages';
 import Profile from 'pages/profile';
 import UserProfile from 'pages/profile/[username]';
 import Post from 'pages/posts/[id]';
-import UserMessages from 'pages/messages/[id]';
+import UserMessages from 'pages/messages/[userId]';
 import UserProfileFollowing from 'pages/profile/[username]/following';
 import UserProfileFollowers from 'pages/profile/[username]/followers';
 import UserProfileReplies from 'pages/profile/[username]/replies';
@@ -39,7 +39,7 @@ function App() {
           <Route path="/messages" element={<Messages />} />
           <Route path="/messages/new" element={<NewMessage />} />
           <Route path="/messages/chat/:chatId" element={<ChatMessages />} />
-          <Route path="/messages/:id" element={<UserMessages />} />
+          <Route path="/messages/:userId" element={<UserMessages />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/:username" element={<UserProfile />} />
           <Route

@@ -82,6 +82,12 @@ export const getChatImageElements = (chatData, userLoggedInId) => {
   return images;
 };
 
+export const getChatOtherUserId = (users, loggedInUserId) => {
+  return users[0]?._id?.toString() === loggedInUserId?.toString()
+    ? users[1]?._id
+    : users[0]?._id;
+};
+
 const getOtherChatUsers = (users, userLoggedInId) => {
   if (users?.length === 1) return users;
 

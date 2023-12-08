@@ -37,7 +37,6 @@ const Messages = () => {
       return toast.error(err?.message);
     }
     setLoading(false);
-    console.log(data?.data?.data);
     dispatch(setConversationsAction(data?.data?.data));
   };
 
