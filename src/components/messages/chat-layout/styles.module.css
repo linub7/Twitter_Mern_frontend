@@ -1,0 +1,76 @@
+.chatPageContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+}
+
+.chatTitleBarContainer {
+  border-bottom: 1px solid var(--lightGrey);
+  display: flex;
+  align-items: center;
+  padding: var(--spacing);
+}
+
+.chatName {
+  width: 100%;
+  flex: 1;
+  border: 1px solid transparent;
+  padding: 0 5px;
+}
+
+.chatName:hover {
+  border: 1px solid var(--lightGrey);
+  cursor: text;
+}
+
+.mainContentContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.chatContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: hidden;
+}
+
+.footer {
+  display: flex;
+  padding: var(--spacing);
+  flex-shrink: 0;
+}
+
+.footer textarea {
+  flex: 1;
+  resize: none;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 18px;
+  border: none;
+  padding: 8px 12px;
+
+  height: 24px;
+  font-size: 16px;
+}
+
+.footer textarea::placeholder {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  /* margin-left: var(--spacing); */
+}
+
+.sendMessageButton {
+  background-color: transparent;
+}
+
+.chatMessages {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: var(--spacing);
+}

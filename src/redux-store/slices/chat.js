@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   conversations: [],
   groupChatUsers: [],
+  activeConversation: {},
 };
 
 const chatSlice = createSlice({
@@ -12,6 +13,18 @@ const chatSlice = createSlice({
     setConversationsAction: (state, action) => {
       const { payload } = action;
       state.conversations = payload;
+    },
+    updateConversationsAction: (state, action) => {
+      const { payload } = action;
+      let tmpConversations = [...state.conversations];
+      tmpConversations = tmpConversations?.map((conversation) =>
+        conversation?._id !== payload?._id ? conversation : payload
+      );
+      state.conversations = tmpConversations;
+    },
+    setActiveConversationAction: (state, action) => {
+      const { payload } = action;
+      state.activeConversation = payload;
     },
     toggleSelectedUsersForGroupChatAction: (state, action) => {
       const { payload } = action;
@@ -45,6 +58,8 @@ export const {
     toggleSelectedUsersForGroupChatAction,
     setConversationsAction,
     makeEmptyConversationsAction,
+    setActiveConversationAction,
+    updateConversationsAction,
   },
 } = chatSlice;
 

@@ -64,7 +64,7 @@ export const getChatName = (chatData, userLoggedInId) => {
       (user) => `${user?.firstName} ${user?.lastName}`
     );
 
-    chatName = namesArray.join(', ');
+    chatName = namesArray?.join(', ');
   }
 
   return chatName;
@@ -86,6 +86,12 @@ export const getChatOtherUserId = (users, loggedInUserId) => {
   return users[0]?._id?.toString() === loggedInUserId?.toString()
     ? users[1]?._id
     : users[0]?._id;
+};
+
+export const getPVChatImage = (users, loggedInUserId) => {
+  return users[0]?._id?.toString() === loggedInUserId?.toString()
+    ? users[1]?.profilePic?.url
+    : users[0]?.profilePic?.url;
 };
 
 const getOtherChatUsers = (users, userLoggedInId) => {

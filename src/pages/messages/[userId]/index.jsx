@@ -1,25 +1,37 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { HashLoader } from 'react-spinners';
 
 import MainLayout from 'components/shared/main-layout';
 import { getChatByUserIdHandler } from 'api/chat';
 import CustomLoader from 'components/shared/custom-loader';
+import MessagesChatLayout from 'components/messages/chat-layout';
+import { setActiveConversationAction } from 'redux-store/slices/chat';
+import ChangeChatNameModal from 'components/shared/modals/change-chat-name';
 
 const UserMessages = () => {
   const [loading, setLoading] = useState(false);
+  const [chatName, setChatName] = useState('');
+  const [changeChatNameLoading, setChangeChatNameLoading] = useState(false);
+  const [isChangeChatNameModalOpen, setIsChangeChatNameModalOpen] =
+    useState(false);
 
   const params = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
+  const { activeConversation } = useSelector((state) => state.chat);
 
   useEffect(() => {
     handleGetChatByUserId();
 
     return () => {};
   }, [params?.userId]);
+
+  const handleOpenChangeChatNameModal = () =>
+    setIsChangeChatNameModalOpen(true);
 
   const handleGetChatByUserId = async () => {
     setLoading(true);
@@ -34,7 +46,7 @@ const UserMessages = () => {
       return toast.error(err?.message);
     }
     setLoading(false);
-    console.log(data?.data?.data);
+    dispatch(setActiveConversationAction(data?.data?.data));
   };
 
   return (
@@ -44,7 +56,22 @@ const UserMessages = () => {
           <HashLoader color={'#9bd1f9'} />
         </CustomLoader>
       ) : (
-        <div>hi</div>
+        <MessagesChatLayout
+          conversation={activeConversation}
+          loggedInUserId={user?.id}
+          onClick={handleOpenChangeChatNameModal}
+        ></MessagesChatLayout>
+      )}
+      {isChangeChatNameModalOpen && (
+        <ChangeChatNameModal
+          chatName={chatName}
+          changeChatNameLoading={changeChatNameLoading}
+          chatId={activeConversation?._id}
+          token={user?.token}
+          setIsModalOpen={setIsChangeChatNameModalOpen}
+          setChatName={setChatName}
+          setChangeChatNameLoading={setChangeChatNameLoading}
+        />
       )}
     </MainLayout>
   );

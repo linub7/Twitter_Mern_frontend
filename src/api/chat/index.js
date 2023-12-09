@@ -59,3 +59,21 @@ export const getChatByUserIdHandler = async (id, token) => {
     return { err: response?.data };
   }
 };
+
+export const updateChatNameHandler = async (id, values, token) => {
+  try {
+    const { data } = await client.put(
+      `/chats/${id}`,
+      { ...values },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};

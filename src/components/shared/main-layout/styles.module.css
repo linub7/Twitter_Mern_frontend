@@ -1,12 +1,14 @@
 .wrapper {
-  /* background-color: rgba(0, 0, 0, 0.1);
-  height: 100vh; */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 .row {
   display: grid;
   grid-template-columns: 15% 4fr 1fr;
   gap: 10px;
+  height: 100%;
 }
 
 .navContainer {
