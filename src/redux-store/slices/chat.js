@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   conversations: [],
   groupChatUsers: [],
+  messages: [],
   activeConversation: {},
 };
 
@@ -49,6 +50,33 @@ const chatSlice = createSlice({
     makeEmptyConversationsAction: (state) => {
       state.conversations = [];
     },
+    makeEmptyActiveConversationAction: (state) => {
+      state.activeConversation = {};
+    },
+    makeEmptyActiveConversationMessagesAction: (state) => {
+      state.messages = [];
+    },
+    setActiveConversationMessagesAction: (state, action) => {
+      const { payload } = action;
+      state.messages = payload;
+    },
+    addMessageToActiveConversationAction: (state, action) => {
+      const { payload } = action;
+      state.messages = [...state.messages, payload];
+      const relatedConversation = state.conversations.find(
+        (conversation) =>
+          conversation?._id?.toString() === payload?.chat?._id?.toString()
+      );
+      const conversation = {
+        ...relatedConversation,
+        latestMessage: payload,
+      };
+      const idx = state.conversations.findIndex(
+        (el) => el?._id === conversation._id
+      );
+      state.conversations.splice(idx, 1);
+      state.conversations.unshift(conversation);
+    },
   },
 });
 
@@ -60,6 +88,10 @@ export const {
     makeEmptyConversationsAction,
     setActiveConversationAction,
     updateConversationsAction,
+    addMessageToActiveConversationAction,
+    setActiveConversationMessagesAction,
+    makeEmptyActiveConversationAction,
+    makeEmptyActiveConversationMessagesAction,
   },
 } = chatSlice;
 

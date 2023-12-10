@@ -10,7 +10,6 @@ import {
 const MessagesConversationsListItem = ({ conversation, loggedInUserId }) => {
   const conversationName = getChatName(conversation, loggedInUserId);
   const images = getChatImageElements(conversation, loggedInUserId);
-  const latestMessage = 'This is the latest message'; // TODO
 
   const chatOtherUserId = getChatOtherUserId(
     conversation?.users,
@@ -42,7 +41,12 @@ const MessagesConversationsListItem = ({ conversation, loggedInUserId }) => {
       </div>
       <div className={styles.resultDetailsContainer}>
         <span className={styles.heading}>{conversationName}</span>
-        <span className={styles.subText}>{latestMessage}</span>
+        {conversation?.latestMessage && (
+          <span className={styles.subText}>
+            {conversation?.latestMessage?.sender?.username}:{' '}
+            {conversation?.latestMessage?.content}
+          </span>
+        )}
       </div>
     </Link>
   );
