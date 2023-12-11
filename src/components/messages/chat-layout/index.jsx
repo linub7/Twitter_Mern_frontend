@@ -8,9 +8,13 @@ import styles from './styles.module.css';
 import MessagesChatLayoutChatImage from './header-image';
 import { getChatName } from 'utils/helper';
 import { sendMessageHandler } from 'api/messages';
-import { addMessageToActiveConversationAction } from 'redux-store/slices/chat';
+import {
+  addMessageToActiveConversationAction,
+  setReceiverWatcherAction,
+} from 'redux-store/slices/chat';
 import MessagesSkeletons from 'components/shared/messages-skeletons';
 import MessagesList from '../list';
+import typingDots from 'assets/images/dots.gif';
 
 const MessagesChat = ({
   conversation,
@@ -18,13 +22,34 @@ const MessagesChat = ({
   token,
   getMessagesLoading = false,
   messages,
+  isTyping = false,
+  socket,
+  receiverWatcher,
   onClick = () => {},
+  setIsTyping = () => {},
 }) => {
   const [content, setContent] = useState('');
   const [sendMessageLoading, setSendMessageLoading] = useState(false);
 
   const dispatch = useDispatch();
   const chatPreName = getChatName(conversation, loggedInUserId);
+
+  const handleChangeInput = (e) => {
+    setContent(e.target.value);
+    if (!isTyping) {
+      setIsTyping(true);
+      socket.emit('typing', conversation?._id);
+    }
+    const lastTypingTime = new Date().getTime(); // getTime() returns in ms
+    const timer = 3000;
+    setTimeout(() => {
+      const now = new Date().getTime();
+      if (now - lastTypingTime >= timer && isTyping) {
+        socket.emit('stop-typing', conversation?._id);
+        setIsTyping(false);
+      }
+    }, timer);
+  };
 
   const handleSendMessage = useCallback(async () => {
     setSendMessageLoading(true);
@@ -36,12 +61,13 @@ const MessagesChat = ({
       setSendMessageLoading(false);
       return toast.error(err?.message);
     }
-    console.log(data?.data?.data);
     setContent('');
     setSendMessageLoading(false);
+    socket.emit('send-message', data?.data?.data);
+    console.log('message sent');
     await dispatch(addMessageToActiveConversationAction(data?.data?.data));
-    // TODO: add socket
-  }, [content, conversation?._id, token, dispatch]);
+    await dispatch(setReceiverWatcherAction(receiverWatcher));
+  }, [content, conversation?._id, token, dispatch, socket, receiverWatcher]);
 
   return (
     <div className={styles.chatPageContainer}>
@@ -53,19 +79,28 @@ const MessagesChat = ({
       </div>
       <div className={styles.mainContentContainer}>
         <div className={styles.chatContainer}>
-          <div className={styles.chatMessages}>
+          <ul className={`${styles.chatMessages} ${styles.customScrollbar}`}>
             {getMessagesLoading ? (
               <MessagesSkeletons />
             ) : (
-              <MessagesList messages={messages} />
+              <MessagesList
+                messages={messages}
+                loggedInUserId={loggedInUserId}
+                isTyping={isTyping}
+              />
             )}
-          </div>
+          </ul>
+          {isTyping && (
+            <div className={styles.typingDots}>
+              <img src={typingDots} alt="dots" />
+            </div>
+          )}
           <div className={styles.footer}>
             <textarea
               className={styles.textArea}
               placeholder="Type a message..."
               value={content}
-              onChange={(e) => setContent(e.target.value)}
+              onChange={handleChangeInput}
             ></textarea>
             {content && content?.trim() !== '' && (
               <button

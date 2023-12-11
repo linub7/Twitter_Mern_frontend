@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
+import { io } from 'socket.io-client';
 import { Toaster } from 'react-hot-toast';
 
 import './App.css';
@@ -21,10 +22,19 @@ import UserProfileReplies from 'pages/profile/[username]/replies';
 import SearchUsers from 'pages/search/users';
 import NewMessage from 'pages/messages/new';
 import ChatMessages from 'pages/messages/chat/[chatId]';
+import SocketContext from 'context/SocketContext';
+
+const socket = io(
+  import.meta.env.VITE_REACT_APP_DEVELOPMENT
+    ? import.meta.env.VITE_REACT_APP_BACKEND_DEVELOPMENT_URL?.split(
+        '/api/v1'
+      )[0]
+    : import.meta.env.VITE_REACT_APP_BACKEND_PRODUCTION_URL?.split('/api/v1')[0]
+);
 
 function App() {
   return (
-    <>
+    <SocketContext.Provider value={socket}>
       <Toaster />
       <Routes>
         <Route element={<NotLoggedInRoutes />}>
@@ -58,7 +68,7 @@ function App() {
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </>
+    </SocketContext.Provider>
   );
 }
 

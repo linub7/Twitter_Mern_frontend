@@ -1,0 +1,76 @@
+.message {
+  list-style: none;
+  padding-bottom: 2px;
+  display: flex;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.mine {
+  flex-direction: row-reverse;
+}
+
+.their {
+}
+
+.messageContainer {
+  display: flex;
+  flex-direction: column;
+  max-width: 55%;
+}
+
+.messageBody {
+  background-color: #f1f0f0;
+  padding: 6px 12px;
+  border-radius: 18px;
+  font-size: 14px;
+}
+
+.mineMessageBody {
+  background-color: var(--blue);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 18px;
+  font-size: 14px;
+}
+
+.firstMessageBody {
+  border-bottom-right-radius: 2px;
+}
+.middleMessageBody {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+.lastMessageBody {
+  border-top-right-radius: 2px;
+}
+
+.firstTheirMessageBody {
+  border-bottom-left-radius: 2px;
+}
+.middleTheirMessageBody {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+.lastTheirMessageBody {
+  border-top-left-radius: 2px;
+}
+
+.senderName {
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 14px;
+  margin-left: 40px;
+}
+
+.contentContainer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.theirProfileImage {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}

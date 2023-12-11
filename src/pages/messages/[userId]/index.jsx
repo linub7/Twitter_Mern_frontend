@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { HashLoader } from 'react-spinners';
@@ -13,9 +13,11 @@ import {
   makeEmptyActiveConversationMessagesAction,
   setActiveConversationAction,
   setActiveConversationMessagesAction,
+  updateActiveConversationAndItsMessagesAction,
 } from 'redux-store/slices/chat';
 import ChangeChatNameModal from 'components/shared/modals/change-chat-name';
 import { getChatMessagesHandler } from 'api/messages';
+import SocketContext from 'context/SocketContext';
 
 const UserMessages = () => {
   const [loading, setLoading] = useState(false);
@@ -24,15 +26,28 @@ const UserMessages = () => {
   const [isChangeChatNameModalOpen, setIsChangeChatNameModalOpen] =
     useState(false);
   const [isActiveConversationSet, setIsActiveConversationSet] = useState(false);
-  const [conversationId, setConversationId] = useState();
+  // const [conversationId, setConversationId] = useState();
   const [getMessagesLoading, setGetMessagesLoading] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
 
+  const socket = useContext(SocketContext);
   const params = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-  const { activeConversation, messages } = useSelector((state) => state.chat);
+  const { activeConversation, messages, receiverWatcher } = useSelector(
+    (state) => state.chat
+  );
 
+  // typing
+  useEffect(() => {
+    socket.on('typing', () => setIsTyping(true));
+    socket.on('stop-typing', () => setIsTyping(false));
+
+    return () => {};
+  }, [isTyping]);
+
+  // get chat
   useEffect(() => {
     handleGetChatByUserId();
 
@@ -42,6 +57,7 @@ const UserMessages = () => {
     };
   }, [params?.userId]);
 
+  // get chat messages
   useEffect(() => {
     if (isActiveConversationSet) handleGetChatMessages();
 
@@ -71,14 +87,14 @@ const UserMessages = () => {
     }
     setLoading(false);
     setIsActiveConversationSet(true);
-    setConversationId(data?.data?.data?._id);
+    // setConversationId(data?.data?.data?._id);
     dispatch(setActiveConversationAction(data?.data?.data));
   };
 
   const handleGetChatMessages = async () => {
     setGetMessagesLoading(true);
     const { err, data } = await getChatMessagesHandler(
-      conversationId,
+      activeConversation?._id,
       user?.token
     );
     if (err) {
@@ -104,6 +120,10 @@ const UserMessages = () => {
           token={user?.token}
           messages={messages}
           getMessagesLoading={getMessagesLoading}
+          isTyping={isTyping}
+          socket={socket}
+          receiverWatcher={receiverWatcher}
+          setIsTyping={setIsTyping}
           onClick={handleOpenChangeChatNameModal}
         />
       )}

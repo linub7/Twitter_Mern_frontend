@@ -24,6 +24,7 @@ export default defineConfig({
       routes: '/src/routes',
       assets: '/src/assets',
       constants: '/src/constants',
+      context: '/src/context',
       'redux-store': '/src/redux-store',
     },
   },

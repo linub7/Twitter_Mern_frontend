@@ -4,6 +4,7 @@
   align-items: center;
   flex-shrink: 0; /* due to safari bug */
   border-bottom: 1px solid var(--lightGrey);
+  cursor: pointer;
 }
 
 .listItem:hover {
