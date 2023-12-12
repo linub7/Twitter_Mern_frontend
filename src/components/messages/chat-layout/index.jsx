@@ -8,10 +8,7 @@ import styles from './styles.module.css';
 import MessagesChatLayoutChatImage from './header-image';
 import { getChatName } from 'utils/helper';
 import { sendMessageHandler } from 'api/messages';
-import {
-  addMessageToActiveConversationAction,
-  setReceiverWatcherAction,
-} from 'redux-store/slices/chat';
+import { addMessageToActiveConversationAction } from 'redux-store/slices/chat';
 import MessagesSkeletons from 'components/shared/messages-skeletons';
 import MessagesList from '../list';
 import typingDots from 'assets/images/dots.gif';
@@ -24,7 +21,6 @@ const MessagesChat = ({
   messages,
   isTyping = false,
   socket,
-  receiverWatcher,
   onClick = () => {},
   setIsTyping = () => {},
 }) => {
@@ -61,13 +57,13 @@ const MessagesChat = ({
       setSendMessageLoading(false);
       return toast.error(err?.message);
     }
+
     setContent('');
     setSendMessageLoading(false);
     socket.emit('send-message', data?.data?.data);
-    console.log('message sent');
+
     await dispatch(addMessageToActiveConversationAction(data?.data?.data));
-    await dispatch(setReceiverWatcherAction(receiverWatcher));
-  }, [content, conversation?._id, token, dispatch, socket, receiverWatcher]);
+  }, [content, conversation?._id, token, dispatch, socket]);
 
   return (
     <div className={styles.chatPageContainer}>

@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { HashLoader } from 'react-spinners';
@@ -23,7 +23,6 @@ import PostsList from 'components/shared/posts-list';
 import NoResult from 'components/shared/no-result';
 import ReplyModal from 'components/shared/modals/reply-modal';
 import WarningModal from 'components/shared/modals/warning-modal';
-import SocketContext from 'context/SocketContext';
 
 const Home = () => {
   const [content, setContent] = useState('');
@@ -41,17 +40,9 @@ const Home = () => {
   const { user } = useSelector((state) => state.user);
   const { posts } = useSelector((state) => state.post);
 
-  const socket = useContext(SocketContext);
-
   const dispatch = useDispatch();
 
   const userImage = getImageSource(user?.profilePic);
-
-  useEffect(() => {
-    socket.emit('join', user?.id);
-
-    return () => {};
-  }, []);
 
   useEffect(() => {
     handleGetPosts();

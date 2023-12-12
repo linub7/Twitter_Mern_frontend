@@ -5,7 +5,6 @@ const initialState = {
   groupChatUsers: [],
   messages: [],
   activeConversation: {},
-  receiverWatcher: false,
 };
 
 const chatSlice = createSlice({
@@ -83,6 +82,11 @@ const chatSlice = createSlice({
       const activeConversation = state.activeConversation;
       // update messages
       if (activeConversation?._id === payload?.chat?._id) {
+        const tmpMessages = state.messages;
+        const ifExisted = tmpMessages.findIndex(
+          (msg) => msg?._id === payload?._id
+        );
+        if (ifExisted !== -1) return;
         state.messages = [...state.messages, payload];
       }
       // update conversation
@@ -100,10 +104,6 @@ const chatSlice = createSlice({
       state.conversations.splice(idx, 1);
       state.conversations.unshift(conversation);
     },
-    setReceiverWatcherAction: (state, action) => {
-      const { payload } = action;
-      state.receiverWatcher = !payload;
-    },
   },
 });
 
@@ -120,7 +120,6 @@ export const {
     makeEmptyActiveConversationAction,
     makeEmptyActiveConversationMessagesAction,
     updateActiveConversationAndItsMessagesAction,
-    setReceiverWatcherAction,
   },
 } = chatSlice;
 

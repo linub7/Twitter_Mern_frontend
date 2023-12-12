@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -34,17 +35,26 @@ const ChatMessages = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-  const { activeConversation, messages, receiverWatcher } = useSelector(
-    (state) => state.chat
-  );
+  const { activeConversation, messages } = useSelector((state) => state.chat);
 
-  // typing
+  // user join to socket
   useEffect(() => {
+    socket.emit('join', user?.id);
+
+    return () => {};
+  }, []);
+
+  // typing / receive message
+  useEffect(() => {
+    socket.on('receive-message', (message) =>
+      dispatch(updateActiveConversationAndItsMessagesAction(message))
+    );
+
     socket.on('typing', () => setIsTyping(true));
     socket.on('stop-typing', () => setIsTyping(false));
 
     return () => {};
-  }, [isTyping]);
+  }, []);
 
   // get chat
   useEffect(() => {
@@ -71,6 +81,9 @@ const ChatMessages = () => {
 
   const handleMakeEmptyActiveConversationMessages = () =>
     dispatch(makeEmptyActiveConversationMessagesAction());
+
+  // const handleUpdateActiveConversationMessages = (message) =>
+  //   dispatch(updateActiveConversationAndItsMessagesAction(message));
 
   const handleGetChat = async () => {
     setLoading(true);
@@ -118,7 +131,6 @@ const ChatMessages = () => {
           getMessagesLoading={getMessagesLoading}
           isTyping={isTyping}
           socket={socket}
-          receiverWatcher={receiverWatcher}
           setIsTyping={setIsTyping}
           onClick={handleOpenChangeChatNameModal}
         />
