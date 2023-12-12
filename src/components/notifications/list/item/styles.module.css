@@ -1,0 +1,49 @@
+.listItem {
+  padding: 7px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0; /* due to safari bug */
+  border-bottom: 1px solid var(--lightGrey);
+  cursor: pointer;
+}
+
+.listItem:hover {
+  background-color: #f2f2f2;
+  text-decoration: none;
+}
+
+.openedListItem {
+  background-color: var(--blueBackground);
+}
+
+.resultsImageContainer {
+  height: 40px;
+  width: 40px;
+  position: relative;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+
+.profilePic {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+}
+
+.resultDetailsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.resultDetailsContainer .heading {
+  font-weight: 800;
+}
+
+.resultDetailsContainer .subText {
+  /* color: var(--greyText); */
+  font-size: 14px;
+}

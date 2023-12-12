@@ -7,7 +7,7 @@ import {
   IoPersonOutline,
   IoLogOutOutline,
 } from 'react-icons/io5';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
@@ -19,6 +19,10 @@ import { logoutAction } from 'redux-store/slices/user';
 const CustomNav = ({ navStyles, navRef }) => {
   const location = useLocation();
   const dispatch = useDispatch();
+
+  const { newMessageNotificationsCount, otherNotificationsCount } = useSelector(
+    (state) => state.notification
+  );
 
   const handleSignout = async () => {
     const { err } = await signoutHandler();
@@ -54,12 +58,18 @@ const CustomNav = ({ navStyles, navRef }) => {
             location?.pathname === '/notifications' ? '#1fa2f1' : '#212529'
           }
         />
+        {otherNotificationsCount !== 0 && (
+          <span className={styles.badge}>{otherNotificationsCount}</span>
+        )}
       </CustomNavLink>
       <CustomNavLink path={'/messages'} styles={styles.navLink}>
         <IoMailOutline
           size={30}
           color={location?.pathname === '/messages' ? '#1fa2f1' : '#212529'}
         />
+        {newMessageNotificationsCount !== 0 && (
+          <span className={styles.badge}>{newMessageNotificationsCount}</span>
+        )}
       </CustomNavLink>
       <CustomNavLink path={'/profile'} styles={styles.navLink}>
         <IoPersonOutline
