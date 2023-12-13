@@ -10,6 +10,7 @@ import {
 } from 'utils/helper';
 import SocketContext from 'context/SocketContext';
 import { setActiveConversationAction } from 'redux-store/slices/chat';
+import { decrementUnreadMessagesCountAction } from 'redux-store/slices/notification';
 
 const MessagesConversationsListItem = ({ conversation, loggedInUserId }) => {
   const conversationName = getChatName(conversation, loggedInUserId);
@@ -24,9 +25,15 @@ const MessagesConversationsListItem = ({ conversation, loggedInUserId }) => {
   const socket = useContext(SocketContext);
   const dispatch = useDispatch();
 
-  const handleNavigate = () => {
+  const handleNavigate = async () => {
     socket.emit('join-conversation', conversation?._id);
-    dispatch(setActiveConversationAction(conversation));
+    await dispatch(setActiveConversationAction(conversation));
+    if (
+      conversation?.latestMessage?.sender?._id?.toString() !==
+      loggedInUserId?.toString()
+    ) {
+      await dispatch(decrementUnreadMessagesCountAction());
+    }
     navigate(
       !conversation?.isGroup && conversation?.users?.length === 2
         ? `/messages/${chatOtherUserId}`
@@ -35,7 +42,16 @@ const MessagesConversationsListItem = ({ conversation, loggedInUserId }) => {
   };
 
   return (
-    <div className={styles.listItem} onClick={handleNavigate}>
+    <div
+      className={`${styles.listItem} ${
+        conversation?.latestMessage?.sender?._id?.toString() !==
+          loggedInUserId?.toString() &&
+        !conversation?.latestMessage?.readBy?.includes(loggedInUserId)
+          ? styles.openedListItem
+          : ''
+      }`}
+      onClick={handleNavigate}
+    >
       <div
         className={`${styles.resultsImageContainer} ${
           images?.length > 1 ? styles.groupChatImage : ''

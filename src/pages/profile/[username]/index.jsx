@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { HashLoader } from 'react-spinners';
@@ -20,6 +20,7 @@ import PostsList from 'components/shared/posts-list';
 import ReplyModal from 'components/shared/modals/reply-modal';
 import WarningModal from 'components/shared/modals/warning-modal';
 import { deletePostHandler } from 'api/post';
+import SocketContext from 'context/SocketContext';
 
 const UserProfile = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -33,6 +34,7 @@ const UserProfile = () => {
 
   const params = useParams();
   const dispatch = useDispatch();
+  const socket = useContext(SocketContext);
 
   const { user } = useSelector((state) => state.user);
   const { posts, profileData } = useSelector((state) => state.post);
@@ -99,8 +101,15 @@ const UserProfile = () => {
       console.log(err);
       return toast.error(err?.message);
     }
-    dispatch(setProfileDataAction(data?.data?.data?.user));
-  }, [dispatch, profileData?._id, user?.token]);
+
+    await dispatch(setProfileDataAction(data?.data?.data?.user));
+    // if (data?.data?.data?.user?._id?.toString() === user?.id?.toString())
+    //   return;
+    // socket.emit('follow-notification-received', {
+    //   data: data?.data?.data,
+    //   user,
+    // });
+  }, [dispatch, profileData?._id, socket, user]);
 
   return (
     <MainLayout pageTitle={params?.username}>

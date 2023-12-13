@@ -35,9 +35,11 @@ const Notifications = () => {
     if (!notifications) return;
     if (notifications?.length < 1) setIsShowMarkedAllIcon(false);
     else {
-      for (const item of notifications) {
-        setIsShowMarkedAllIcon(item?.opened === false ? true : false);
-      }
+      setIsShowMarkedAllIcon(
+        notifications?.find((item) => !item?.opened) !== undefined
+          ? true
+          : false
+      );
     }
 
     return () => {};

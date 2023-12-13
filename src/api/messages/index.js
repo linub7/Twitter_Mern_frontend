@@ -31,3 +31,17 @@ export const getChatMessagesHandler = async (id, token) => {
     return { err: response?.data };
   }
 };
+
+export const getChatsUnreadMessagesHandler = async (token) => {
+  try {
+    const { data } = await client.get(`/chats/unread-messages`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};

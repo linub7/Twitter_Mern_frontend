@@ -82,9 +82,6 @@ const ChatMessages = () => {
   const handleMakeEmptyActiveConversationMessages = () =>
     dispatch(makeEmptyActiveConversationMessagesAction());
 
-  // const handleUpdateActiveConversationMessages = (message) =>
-  //   dispatch(updateActiveConversationAndItsMessagesAction(message));
-
   const handleGetChat = async () => {
     setLoading(true);
     const { err, data } = await getChatHandler(params?.chatId, user?.token);

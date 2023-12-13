@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useContext, useEffect, useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
@@ -10,7 +10,10 @@ import { getNotificationCountsHandler } from 'api/notification';
 import {
   setNewMessageNotificationsCountAction,
   setOtherNotificationsCountAction,
+  setUnreadMessagesCountAction,
 } from 'redux-store/slices/notification';
+import { getChatsUnreadMessagesHandler } from 'api/messages';
+// import SocketContext from 'context/SocketContext';
 
 const MainLayout = ({
   isShowActionSection = false,
@@ -22,6 +25,7 @@ const MainLayout = ({
   children,
   handleClickActionIcon = () => {},
 }) => {
+  // const socket = useContext(SocketContext);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
 
@@ -52,6 +56,26 @@ const MainLayout = ({
     return () => {};
   }, []);
 
+  // useEffect(() => {
+  //   socket.on('follow-notification-received', (newNotification) => {
+  //     console.log('follow notification received', newNotification);
+  //   });
+
+  //   socket.on('retweet-notification-received', (newNotification) => {
+  //     console.log('retweet notification received', newNotification);
+  //   });
+
+  //   socket.on('like-notification-received', (newNotification) => {
+  //     console.log('like notification received', newNotification);
+  //   });
+
+  //   socket.on('reply-notification-received', (newNotification) => {
+  //     console.log('reply notification received', newNotification);
+  //   });
+
+  //   return () => {};
+  // }, []);
+
   useEffect(() => {
     handleGetNotificationCounts();
     return () => {};
@@ -63,6 +87,12 @@ const MainLayout = ({
       console.log(err);
       return toast.error(err?.message);
     }
+    const { err: unreadError, data: unreadData } =
+      await getChatsUnreadMessagesHandler(user?.token);
+    if (unreadError) {
+      console.log(unreadError);
+      return toast.error(unreadError?.message);
+    }
     await dispatch(
       setNewMessageNotificationsCountAction(
         data?.data?.data?.newMessageNotificationsCount
@@ -73,7 +103,9 @@ const MainLayout = ({
         data?.data?.data?.otherNotificationsCount
       )
     );
+    await dispatch(setUnreadMessagesCountAction(unreadData?.data?.data));
   };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.row}>

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { IoRepeatOutline, IoArrowForwardOutline } from 'react-icons/io5';
 import { BsFillPinFill } from 'react-icons/bs';
@@ -15,6 +15,7 @@ import {
 } from 'redux-store/slices/post';
 import PostItemHeader from './header';
 import PostItemFooter from './footer';
+import SocketContext from 'context/SocketContext';
 
 const PostItem = ({
   userId,
@@ -37,6 +38,7 @@ const PostItem = ({
 
   const postId = post?._id;
 
+  const socket = useContext(SocketContext);
   const source = getImageSource(post?.postedBy?.profilePic?.url);
   const date = timeDifference(new Date(), new Date(post?.createdAt));
 
@@ -83,8 +85,17 @@ const PostItem = ({
       dispatch(removePostAction(rePost));
     }
     // update main post
-    dispatch(updatePostStatusAction(post));
-  }, [postId, dispatch, token]);
+    await dispatch(updatePostStatusAction(post));
+    // send socket notification
+    // if (
+    //   data?.data?.data?.post?.postedBy?._id?.toString() === userId?.toString()
+    // )
+    //   return;
+    // socket.emit('retweet-notification-received', {
+    //   data: data?.data?.data,
+    //   user: userId,
+    // });
+  }, [postId, dispatch, token, userId, socket]);
 
   const handleToggleLike = useCallback(async () => {
     const { err, data } = await togglePostLikeHandler(postId, token);
@@ -93,8 +104,15 @@ const PostItem = ({
       return toast.error(err?.message);
     }
 
-    dispatch(updatePostStatusAction(data?.data?.data));
-  }, [postId, dispatch, token]);
+    await dispatch(updatePostStatusAction(data?.data?.data));
+    // send socket notification
+    if (data?.data?.data?.postedBy?._id?.toString() === userId?.toString())
+      return;
+    socket.emit('like-notification-received', {
+      data: data?.data?.data,
+      user: userId,
+    });
+  }, [postId, dispatch, token, socket, userId]);
 
   return (
     <div

@@ -20,7 +20,7 @@ const CustomNav = ({ navStyles, navRef }) => {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const { newMessageNotificationsCount, otherNotificationsCount } = useSelector(
+  const { otherNotificationsCount, unreadMessagesCount } = useSelector(
     (state) => state.notification
   );
 
@@ -67,8 +67,8 @@ const CustomNav = ({ navStyles, navRef }) => {
           size={30}
           color={location?.pathname === '/messages' ? '#1fa2f1' : '#212529'}
         />
-        {newMessageNotificationsCount !== 0 && (
-          <span className={styles.badge}>{newMessageNotificationsCount}</span>
+        {unreadMessagesCount !== 0 && (
+          <span className={styles.badge}>{unreadMessagesCount}</span>
         )}
       </CustomNavLink>
       <CustomNavLink path={'/profile'} styles={styles.navLink}>

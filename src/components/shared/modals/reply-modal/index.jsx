@@ -1,5 +1,5 @@
 import { BounceLoader } from 'react-spinners';
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 
@@ -10,6 +10,7 @@ import CreatePost from 'components/shared/create-post';
 import { getImageSource } from 'utils/helper';
 import { createPostHandler } from 'api/post';
 import { addPostToPostsAction } from 'redux-store/slices/post';
+import SocketContext from 'context/SocketContext';
 
 const ReplyModal = ({
   user,
@@ -21,6 +22,7 @@ const ReplyModal = ({
   setReplyContent = () => {},
   setCreateReplyPostLoading = () => {},
 }) => {
+  const socket = useContext(SocketContext);
   const dispatch = useDispatch();
   const userImage = getImageSource(user?.profilePic);
 
@@ -48,13 +50,21 @@ const ReplyModal = ({
     setReplyContent('');
     setCreateReplyPostLoading(false);
     setIsModalOpen(false);
-    dispatch(addPostToPostsAction(data?.data?.data));
+    await dispatch(addPostToPostsAction(data?.data?.data));
+    // send socket notification
+    // if (data?.data?.data?.postedBy?._id?.toString() === user?.id?.toString())
+    //   return;
+    // socket.emit('reply-notification-received', {
+    //   data: data?.data?.data,
+    //   user,
+    // });
   }, [
     targetPost?._id,
     replyContent,
     dispatch,
-    user?.token,
     createReplyPostLoading,
+    user,
+    socket,
   ]);
   return (
     <ModalContainer

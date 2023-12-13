@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { BounceLoader } from 'react-spinners';
@@ -11,6 +11,7 @@ import CustomLoader from 'components/shared/custom-loader';
 import NoResult from 'components/shared/no-result';
 import UsersList from 'components/shared/users-list';
 import { updateFollowingListAction } from 'redux-store/slices/user';
+import SocketContext from 'context/SocketContext';
 
 const SearchUsers = () => {
   const [users, setUsers] = useState([]);
@@ -18,6 +19,7 @@ const SearchUsers = () => {
   const [noResultFound, setNoResultFound] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const socket = useContext(SocketContext);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
 
@@ -64,9 +66,15 @@ const SearchUsers = () => {
         return toast.error(err?.message);
       }
       const payload = { userId: id, option: data?.data?.data?.option };
-      dispatch(updateFollowingListAction(payload));
+      await dispatch(updateFollowingListAction(payload));
+      // if (data?.data?.data?.user?._id?.toString() === user?.id?.toString())
+      //   return;
+      // socket.emit('follow-notification-received', {
+      //   data: data?.data?.data,
+      //   user,
+      // });
     },
-    [user, dispatch]
+    [user, dispatch, socket]
   );
 
   return (
